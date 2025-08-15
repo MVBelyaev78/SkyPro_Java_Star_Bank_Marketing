@@ -7,8 +7,8 @@ public final class Recommendation {
     private final String recommendationName;
     private final String recommendationContent;
 
-    public Recommendation(UUID id, String recommendationName, String recommendationContent) {
-        this.recommendationId = id;
+    public Recommendation(UUID recommendationId, String recommendationName, String recommendationContent) {
+        this.recommendationId = recommendationId;
         this.recommendationName = recommendationName;
         this.recommendationContent = recommendationContent;
     }

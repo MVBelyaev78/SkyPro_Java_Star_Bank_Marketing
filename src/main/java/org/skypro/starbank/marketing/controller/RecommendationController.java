@@ -1,22 +1,23 @@
 package org.skypro.starbank.marketing.controller;
 
-import org.skypro.starbank.marketing.recommendation.ProductRecommender;
+import org.skypro.starbank.marketing.model.recommendation.Recommendation;
+import org.skypro.starbank.marketing.service.RecommendationService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.Collection;
 
+@RestController
 public class RecommendationController {
-    private final List<ProductRecommender> recommenders;
+    private final RecommendationService recommendationService;
 
-    public RecommendationController(List<ProductRecommender> recommenders) {
-        this.recommenders = recommenders;
+    public RecommendationController(RecommendationService recommendationService) {
+        this.recommendationService = recommendationService;
     }
 
-    @GetMapping("/{userId}")
-    public List<ProductRecommender> getRecommendation(@PathVariable UUID userId) {
-        return Collections.emptyList();
+    @GetMapping("")
+    public Collection<Recommendation> getRecommendationList(@RequestParam("user") String userId) {
+        return recommendationService.getRecommendationList(userId);
     }
 }
