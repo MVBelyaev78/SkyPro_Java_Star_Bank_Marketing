@@ -16,8 +16,8 @@ public class RecommendationController {
         this.recommendationService = recommendationService;
     }
 
-    @GetMapping("")
-    public Collection<Recommendation> getRecommendationList(@RequestParam("user") String userId) {
+    @GetMapping("/{userId}")
+    public Collection<Recommendation> getRecommendationList(String userId) {
         return recommendationService.getRecommendationList(userId);
     }
 }
