@@ -24,10 +24,4 @@ public final class Recommendation {
     public String getRecommendationContent() {
         return recommendationContent;
     }
-
-    @Override
-    public String toString() {
-        return String.format("Product: ID=%s, type=\"%s\", name=\"%s\"",
-                recommendationId, recommendationName, recommendationContent);
-    }
 }
