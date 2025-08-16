@@ -18,8 +18,8 @@ public class RecommendationController {
         this.recommendationService = recommendationService;
     }
 
-    @GetMapping("/{id}")
-    public ServiceResult getRecommendationList(@PathVariable String id) {
-        return recommendationService.getServiceResult(id);
+    @GetMapping("/{userId}")
+    public ServiceResult getRecommendationList(@PathVariable String userId) {
+        return recommendationService.getServiceResult(userId);
     }
 }
