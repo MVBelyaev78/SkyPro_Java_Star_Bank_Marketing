@@ -1,20 +1,14 @@
-package org.skypro.starbank.marketing.model.recommendation;
+package org.skypro.starbank.marketing.source;
 
 import java.util.UUID;
 
 public final class Recommendation {
-    private final UUID id;
     private final String name;
     private final String text;
 
-    public Recommendation(UUID id, String name, String text) {
-        this.id = id;
+    public Recommendation(String name, String text) {
         this.name = name;
         this.text = text;
-    }
-
-    public UUID getId() {
-        return id;
     }
 
     public String getName() {
