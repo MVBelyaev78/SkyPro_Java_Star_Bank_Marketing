@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
-
 @RestController
 @RequestMapping("/recommendation")
 public class RecommendationController {
@@ -19,6 +17,6 @@ public class RecommendationController {
 
     @GetMapping("/{userId}")
     public ServiceResult getRecommendationList(String userId) {
-        return recommendationService.getServiceREsult(userId);
+        return recommendationService.getServiceResult(userId);
     }
 }

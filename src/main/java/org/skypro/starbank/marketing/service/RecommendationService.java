@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Service
 public class RecommendationService {
-    public ServiceResult getServiceREsult(String userId) {
+    public ServiceResult getServiceResult(String userId) {
         Collection<Recommendation> recommendations = new ArrayList<>();
         recommendations.add(new Recommendation("Yesterday",
                 "I said something wrong, now I long for yesterday"));
