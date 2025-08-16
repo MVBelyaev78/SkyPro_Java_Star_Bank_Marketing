@@ -1,7 +1,5 @@
 package org.skypro.starbank.marketing.source;
 
-import java.util.UUID;
-
 public final class Recommendation {
     private final String name;
     private final String text;
