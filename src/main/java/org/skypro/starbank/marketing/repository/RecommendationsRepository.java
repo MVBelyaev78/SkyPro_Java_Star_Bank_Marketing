@@ -14,11 +14,10 @@ public class RecommendationsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public int getRandomTransactionAmount(UUID user){
-        Integer result = jdbcTemplate.queryForObject(
-                "SELECT amount FROM transactions t WHERE t.user_id = ? LIMIT 1",
-                Integer.class,
-                user);
-        return result != null ? result : 0;
+    public boolean isUserHasDebitProduct(UUID user){
+        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(
+                "SELECT EXISTS( SELECT 1 FROM TRANSACTIONS t JOIN PRODUCT p ON t.PRODUCT_ID = p.ID WHERE t.USER_ID = ? AND p.TYPE = 'DEBIT') AS user_debit_product",
+                Boolean.class,
+                user));
     }
 }
