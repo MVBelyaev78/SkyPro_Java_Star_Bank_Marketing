@@ -3,6 +3,7 @@ package org.skypro.starbank.marketing.controller;
 import org.skypro.starbank.marketing.service.RecommendationService;
 import org.skypro.starbank.marketing.source.Recommendation;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,8 +18,8 @@ public class RecommendationController {
         this.recommendationService = recommendationService;
     }
 
-    @GetMapping("/{userId}")
-    public Collection<Recommendation> getRecommendationList(String userId) {
-        return recommendationService.getServiceResult(userId);
+    @GetMapping("/{id}")
+    public Collection<Recommendation> getRecommendationList(@PathVariable String id) {
+        return recommendationService.getServiceResult(id);
     }
 }
