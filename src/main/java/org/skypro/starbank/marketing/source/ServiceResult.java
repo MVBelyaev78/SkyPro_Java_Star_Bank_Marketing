@@ -1,5 +1,7 @@
 package org.skypro.starbank.marketing.source;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Collection;
 import java.util.UUID;
 
@@ -12,10 +14,12 @@ public class ServiceResult {
         this.recommendations = recommendations;
     }
 
+    @JsonProperty("user_id")
     public UUID getUserId() {
         return userId;
     }
 
+    @JsonProperty("recommendations")
     public Collection<Recommendation> getRecommendations() {
         return recommendations;
     }
