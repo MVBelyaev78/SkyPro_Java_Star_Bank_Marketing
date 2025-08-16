@@ -1,7 +1,7 @@
 package org.skypro.starbank.marketing.service;
 
-import org.skypro.starbank.marketing.source.Recommendation;
-import org.skypro.starbank.marketing.source.ServiceResult;
+import org.skypro.starbank.marketing.dto.Recommendation;
+import org.skypro.starbank.marketing.dto.ServiceResult;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

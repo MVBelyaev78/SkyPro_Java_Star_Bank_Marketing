@@ -1,13 +1,11 @@
 package org.skypro.starbank.marketing.controller;
 
 import org.skypro.starbank.marketing.service.RecommendationService;
-import org.skypro.starbank.marketing.source.ServiceResult;
+import org.skypro.starbank.marketing.dto.ServiceResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/recommendation")

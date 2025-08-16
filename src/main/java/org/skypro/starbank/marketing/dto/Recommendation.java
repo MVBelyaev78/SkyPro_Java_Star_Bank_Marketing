@@ -1,4 +1,4 @@
-package org.skypro.starbank.marketing.source;
+package org.skypro.starbank.marketing.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
