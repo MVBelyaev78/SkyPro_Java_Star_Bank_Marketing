@@ -6,12 +6,12 @@ import java.util.UUID;
 
 public final class Recommendation {
     private final String name;
-    private final UUID productId;
+    private final UUID uuid;
     private final String text;
 
-    public Recommendation(String name, UUID productId, String text) {
+    public Recommendation(String name, UUID uuid, String text) {
         this.name = name;
-        this.productId = productId;
+        this.uuid = uuid;
         this.text = text;
     }
 
@@ -21,8 +21,8 @@ public final class Recommendation {
     }
 
     @JsonProperty("id")
-    public UUID getProductId() {
-        return productId;
+    public UUID getUuid() {
+        return uuid;
     }
 
     @JsonProperty("text")
