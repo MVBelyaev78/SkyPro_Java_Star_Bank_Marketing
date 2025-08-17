@@ -15,6 +15,10 @@ public final class Recommendation {
         this.text = text;
     }
 
+    public Recommendation(String name, String id, String text) {
+        this(name, UUID.fromString(id), text);
+    }
+
     @JsonProperty("name")
     public String getName() {
         return name;
