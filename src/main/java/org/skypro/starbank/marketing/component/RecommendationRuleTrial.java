@@ -24,7 +24,7 @@ public class RecommendationRuleTrial implements RecommendationRule {
         return recommendationsRepository.searchResultStringParam(userId.toString(),
                 "SELECT EXISTS (SELECT NULL " +
                         "FROM public.transactions t JOIN public.products p ON p.id = t.product_id " +
-                        "WHERE t.user_id = ?) AS \"result\"");
+                        "WHERE p.\"TYPE\" = 'DEBIT' AND t.user_id = ?) AS \"result\"");
     }
 
     @Override
