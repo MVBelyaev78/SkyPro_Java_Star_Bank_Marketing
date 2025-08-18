@@ -2,7 +2,6 @@ package org.skypro.starbank.marketing.component;
 
 import org.skypro.starbank.marketing.dto.Recommendation;
 import org.skypro.starbank.marketing.repository.RecommendationsRepository;
-import org.skypro.starbank.marketing.result.SearchResult;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
