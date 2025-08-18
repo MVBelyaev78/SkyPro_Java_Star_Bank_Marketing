@@ -21,10 +21,7 @@ public class RecommendationRuleTrial implements RecommendationRule {
     }
 
     public SearchResult getSearchResult(UUID userId) {
-        return recommendationsRepository.searchResultStringParam(userId.toString(),
-                "SELECT NOT EXISTS (SELECT NULL " +
-                        "FROM public.transactions t JOIN public.products p ON p.id = t.product_id " +
-                        "WHERE p.\"TYPE\" = 'INVEST' AND t.user_id = ?) AS \"result\"");
+        return recommendationsRepository.getSearchResult(userId.toString());
     }
 
     @Override

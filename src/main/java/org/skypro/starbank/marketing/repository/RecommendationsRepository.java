@@ -14,9 +14,11 @@ public class RecommendationsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public SearchResult searchResultStringParam(String userId, String sqlQuery) {
+    public SearchResult getSearchResult(String userId) {
         return jdbcTemplate.queryForObject(
-                sqlQuery,
+                "SELECT NOT EXISTS (SELECT NULL " +
+                        "FROM public.transactions t JOIN public.products p ON p.id = t.product_id " +
+                        "WHERE p.\"TYPE\" = 'INVEST' AND t.user_id = ?) AS \"result\"",
                 new SearchResultMapper(),
                 userId);
     }
