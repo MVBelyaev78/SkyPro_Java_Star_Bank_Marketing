@@ -20,14 +20,12 @@ public class RecommendationRuleTrial implements RecommendationRule {
         return recommendationsRepository;
     }
 
-    public SearchResult getSearchResult(UUID userId) {
-        return recommendationsRepository.getSearchResult(userId.toString());
-    }
-
     @Override
     public Optional<Recommendation> getRecommendation(UUID userId) {
         Optional<Recommendation> recommendation;
-        if (getSearchResult(userId).getResult()) {
+        if (recommendationsRepository
+                .getSearchResult(userId.toString())
+                .getResult()) {
             recommendation = Optional.of(new Recommendation(
                     "Trial",
                     "7bcad462-870d-4b70-8ea3-e7f5bf5a23e5",
