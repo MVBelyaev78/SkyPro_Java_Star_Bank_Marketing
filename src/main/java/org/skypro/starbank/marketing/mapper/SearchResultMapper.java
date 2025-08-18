@@ -1,6 +1,6 @@
 package org.skypro.starbank.marketing.mapper;
 
-import org.skypro.starbank.marketing.dto.SearchResult;
+import org.skypro.starbank.marketing.result.SearchResult;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

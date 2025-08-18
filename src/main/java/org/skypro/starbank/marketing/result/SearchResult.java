@@ -1,4 +1,4 @@
-package org.skypro.starbank.marketing.dto;
+package org.skypro.starbank.marketing.result;
 
 public class SearchResult {
     private final Boolean result;
