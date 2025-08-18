@@ -17,10 +17,10 @@ public class RecommendationService {
         this.rules = rules;
     }
 
-    public ServiceResult getServiceResult(String userId) {
+    public ServiceResult getServiceResult(UUID userId) {
         final Collection<Recommendation> recommendations = new ArrayList<>();
-        rules.forEach(rule -> rule.getRecommendation(UUID.fromString(userId))
+        rules.forEach(rule -> rule.getRecommendation(userId)
                 .ifPresent(recommendations::add));
-        return new ServiceResult(UUID.fromString(userId), recommendations);
+        return new ServiceResult(userId, recommendations);
     }
 }
