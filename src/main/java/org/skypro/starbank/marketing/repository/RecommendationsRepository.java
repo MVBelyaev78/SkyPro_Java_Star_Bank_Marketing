@@ -21,4 +21,12 @@ public class RecommendationsRepository {
                 userId,
                 userId);
     }
+    public SearchResult getSimpleCreditEligibility(String userId) {
+        return jdbcTemplate.queryForObject(
+                "SELECT EXISTS (SELECT NULL FROM public.users u WHERE u.id = ? AND u.credit_score >= 600) AS 'result'",
+                new SearchResultMapper(),
+                userId);
+    }
+
+
 }
