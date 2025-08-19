@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class Invest500 implements RecommendationRule {
+public class Invest500Rule implements RecommendationRule {
     private final RecommendationsRepository repo;
 
     private static final UUID PRODUCT_ID = UUID.fromString("147f6a0f-3b91-413b-ab99-87f081d60d5a");
@@ -25,7 +25,7 @@ public class Invest500 implements RecommendationRule {
     public Optional<RecommendationProduct> recommendation(UUID userId) {
         boolean hasDebit = repo.hasProductType(userId, "DEBIT");
         boolean hasInvest = repo.hasProductType(userId, "INVEST");
-        BigDecimal savingDeposits = repo.getTotalDepositsByType(userId, "SAVING");
+        BigDecimal savingDeposits = repo.getTotalDepositsByType(userId, "SAVING","DEPOSIT");
         boolean savingCondition = savingDeposits.compareTo(new BigDecimal("1000")) > 0;
 
         if (hasDebit && !hasInvest && savingCondition) {
