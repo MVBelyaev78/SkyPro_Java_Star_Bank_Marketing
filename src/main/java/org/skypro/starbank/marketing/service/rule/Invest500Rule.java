@@ -25,7 +25,7 @@ public class Invest500Rule implements RecommendationRule {
     public Optional<RecommendationProduct> recommendation(UUID userId) {
         boolean hasDebit = repo.hasProductType(userId, "DEBIT");
         boolean hasInvest = repo.hasProductType(userId, "INVEST");
-        BigDecimal savingDeposits = repo.getTotalDepositsByType(userId, "SAVING","DEPOSIT");
+        BigDecimal savingDeposits = repo.getTotalAmountByType(userId, "SAVING","DEPOSIT");
         boolean savingCondition = savingDeposits.compareTo(new BigDecimal("1000")) > 0;
 
         if (hasDebit && !hasInvest && savingCondition) {

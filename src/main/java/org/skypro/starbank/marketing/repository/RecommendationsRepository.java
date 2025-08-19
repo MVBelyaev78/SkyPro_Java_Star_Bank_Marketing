@@ -27,7 +27,7 @@ public class RecommendationsRepository {
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, Boolean.class, userId, productType));
     }
 
-    public BigDecimal getTotalDepositsByType(UUID userId, String productType, String transactionType) {
+    public BigDecimal getTotalAmountByType(UUID userId, String productType, String transactionType) {
         String sql = """
             SELECT COALESCE(SUM(t.amount), 0)
             FROM TRANSACTIONS t
