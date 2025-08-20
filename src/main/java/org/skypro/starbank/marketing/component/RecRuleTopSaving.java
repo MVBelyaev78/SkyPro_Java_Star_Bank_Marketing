@@ -13,7 +13,7 @@ public class RecRuleTopSaving extends RecommendationRuleImpl {
 
     @Override
     public SearchResult getSearchResult(String userId) {
-        return getRecommendationsRepository().getRecommendationTopSaving(userId);
+        return getRecommendationsRepository().getSearchResultTopSaving(userId);
     }
 
     @Override
