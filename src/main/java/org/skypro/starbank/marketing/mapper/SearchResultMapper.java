@@ -9,6 +9,7 @@ import java.sql.SQLException;
 public class SearchResultMapper implements RowMapper<SearchResult> {
     @Override
     public SearchResult mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new SearchResult(rs.getBoolean("result"));
+        return new SearchResult(
+                rs.getBoolean("result"));
     }
 }
