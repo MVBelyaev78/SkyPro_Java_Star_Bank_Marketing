@@ -73,6 +73,35 @@ public class RecommendationsRepository {
                 )> 0
             ) AS result
             """;
-        return jdbcTemplate.queryForObject(sql, new SearchResultMapper(), userId, userId, userId, 50000, userId, 50000, userId);
+        return jdbcTemplate.queryForObject(sql, new SearchResultMapper(),
+                userId, userId, userId, 50000, userId, 50000, userId);
+    }
+
+    public SearchResult getSearchResultSimpleCredit(String userId) {
+        String sql = """
+                SELECT EXISTS (SELECT NULL
+                                 FROM public.users u
+                                WHERE u.id = ?)
+                   AND NOT EXISTS (SELECT NULL
+                                     FROM public.transactions t
+                                     JOIN public.products p ON p.id = t.product_id
+                                    WHERE p."TYPE" = 'CREDIT'
+                                      AND t.user_id = ?)
+                   AND 0 < (SELECT COALESCE(SUM(CASE t."TYPE" WHEN 'DEPOSIT' THEN t.amount ELSE 0 END), 0) -
+                                   COALESCE(SUM(CASE t."TYPE" WHEN 'WITHDRAW' THEN t.amount ELSE 0 END), 0)
+                              FROM public.transactions t
+                              JOIN public.products p ON p.id = t.product_id
+                             WHERE p."TYPE" = 'DEBIT'
+                               AND t.user_id = ?)
+                   AND ? < (SELECT COALESCE(SUM(t.amount), 0)
+                                   FROM public.transactions t
+                                   JOIN public.products p ON p.id = t.product_id
+                                  WHERE p."TYPE" = 'DEBIT'
+                                    AND t."TYPE" = 'WITHDRAW'
+                                    AND t.user_id = ?)
+                   AS result
+                """;
+        return jdbcTemplate.queryForObject(sql, new SearchResultMapper(),
+                userId, userId, userId, 10000, userId);
     }
 }
