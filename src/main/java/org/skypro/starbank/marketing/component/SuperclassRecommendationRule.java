@@ -2,6 +2,7 @@ package org.skypro.starbank.marketing.component;
 
 import org.skypro.starbank.marketing.dto.Recommendation;
 import org.skypro.starbank.marketing.repository.RecommendationsRepository;
+import org.skypro.starbank.marketing.result.SearchResult;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -20,15 +21,15 @@ public abstract class SuperclassRecommendationRule implements RecommendationRule
     @Override
     public Optional<Recommendation> getRecommendation(UUID userId) {
         Optional<Recommendation> recommendation;
-        if (recommendationsRepository
-                .getSearchResult(userId.toString())
-                .getResult()) {
+        if (getSearchResult(userId.toString()).getResult()) {
             recommendation = Optional.of(getNewRecommendation());
         } else {
             recommendation = Optional.empty();
         }
         return recommendation;
     }
+
+    public abstract SearchResult getSearchResult(String userId);
 
     public abstract Recommendation getNewRecommendation();
 }

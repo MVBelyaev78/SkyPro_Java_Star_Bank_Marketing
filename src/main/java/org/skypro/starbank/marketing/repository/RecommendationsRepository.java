@@ -14,7 +14,7 @@ public class RecommendationsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public SearchResult getSearchResult(String userId) {
+    public SearchResult getSearchResultInvest500(String userId) {
         String sql = """
                 SELECT
                     EXISTS (SELECT 1 FROM users WHERE id = ?)
