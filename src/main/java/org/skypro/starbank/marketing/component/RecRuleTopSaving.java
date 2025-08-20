@@ -6,8 +6,8 @@ import org.skypro.starbank.marketing.result.SearchResult;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RecommendationTopSaving extends SuperclassRecommendationRule{
-    public RecommendationTopSaving(RecommendationsRepository recommendationsRepository) {
+public class RecRuleTopSaving extends RecommendationRuleImpl {
+    public RecRuleTopSaving(RecommendationsRepository recommendationsRepository) {
         super(recommendationsRepository);
     }
 

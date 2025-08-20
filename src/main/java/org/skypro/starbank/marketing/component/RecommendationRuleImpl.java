@@ -7,10 +7,10 @@ import org.skypro.starbank.marketing.result.SearchResult;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class SuperclassRecommendationRule implements RecommendationRule {
+public abstract class RecommendationRuleImpl implements RecommendationRule {
     private final RecommendationsRepository recommendationsRepository;
 
-    public SuperclassRecommendationRule(RecommendationsRepository recommendationsRepository) {
+    public RecommendationRuleImpl(RecommendationsRepository recommendationsRepository) {
         this.recommendationsRepository = recommendationsRepository;
     }
 

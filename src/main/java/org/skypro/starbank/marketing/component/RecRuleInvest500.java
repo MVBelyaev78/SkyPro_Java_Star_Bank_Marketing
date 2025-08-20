@@ -6,8 +6,8 @@ import org.skypro.starbank.marketing.result.SearchResult;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Invest500Rule extends SuperclassRecommendationRule {
-    public Invest500Rule(RecommendationsRepository recommendationsRepository) {
+public class RecRuleInvest500 extends RecommendationRuleImpl {
+    public RecRuleInvest500(RecommendationsRepository recommendationsRepository) {
         super(recommendationsRepository);
     }
 
