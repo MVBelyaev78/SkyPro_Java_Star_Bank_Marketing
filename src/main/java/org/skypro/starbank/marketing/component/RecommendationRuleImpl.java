@@ -29,7 +29,7 @@ public abstract class RecommendationRuleImpl implements RecommendationRule {
         return recommendation;
     }
 
-    public abstract SearchResult getSearchResult(String userId);
+    protected abstract SearchResult getSearchResult(String userId);
 
-    public abstract Recommendation getNewRecommendation();
+    protected abstract Recommendation getNewRecommendation();
 }

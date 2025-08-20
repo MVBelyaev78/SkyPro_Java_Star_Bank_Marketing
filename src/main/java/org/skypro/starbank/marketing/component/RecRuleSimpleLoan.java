@@ -12,12 +12,12 @@ public class RecRuleSimpleLoan extends RecommendationRuleImpl {
     }
 
     @Override
-    public SearchResult getSearchResult(String userId) {
+    protected SearchResult getSearchResult(String userId) {
         return getRecommendationsRepository().getSearchResultSimpleLoan(userId);
     }
 
     @Override
-    public Recommendation getNewRecommendation() {
+    protected Recommendation getNewRecommendation() {
         return new Recommendation(
                 "Простой кредит",
                 "ab138afb-f3ba-4a93-b74f-0fcee86d447f",

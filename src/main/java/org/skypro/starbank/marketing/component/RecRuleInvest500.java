@@ -12,12 +12,12 @@ public class RecRuleInvest500 extends RecommendationRuleImpl {
     }
 
     @Override
-    public SearchResult getSearchResult(String userId) {
+    protected SearchResult getSearchResult(String userId) {
         return getRecommendationsRepository().getSearchResultInvest500(userId);
     }
 
     @Override
-    public Recommendation getNewRecommendation() {
+    protected Recommendation getNewRecommendation() {
         return new Recommendation(
                 "Invest 500",
                 "147f6a0f-3b91-413b-ab99-87f081d60d5a",

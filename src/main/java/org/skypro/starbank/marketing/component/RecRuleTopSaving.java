@@ -12,12 +12,12 @@ public class RecRuleTopSaving extends RecommendationRuleImpl {
     }
 
     @Override
-    public SearchResult getSearchResult(String userId) {
+    protected SearchResult getSearchResult(String userId) {
         return getRecommendationsRepository().getSearchResultTopSaving(userId);
     }
 
     @Override
-    public Recommendation getNewRecommendation() {
+    protected Recommendation getNewRecommendation() {
         return new Recommendation(
                 "Top Saving",
                 "59efc529-2fff-41af-baff-90ccd7402925",
