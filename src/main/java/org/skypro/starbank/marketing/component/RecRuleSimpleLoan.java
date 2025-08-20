@@ -6,14 +6,14 @@ import org.skypro.starbank.marketing.result.SearchResult;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RecRuleSimpleCredit extends RecommendationRuleImpl {
-    public RecRuleSimpleCredit(RecommendationsRepository recommendationsRepository) {
+public class RecRuleSimpleLoan extends RecommendationRuleImpl {
+    public RecRuleSimpleLoan(RecommendationsRepository recommendationsRepository) {
         super(recommendationsRepository);
     }
 
     @Override
     public SearchResult getSearchResult(String userId) {
-        return getRecommendationsRepository().getSearchResultSimpleCredit(userId);
+        return getRecommendationsRepository().getSearchResultSimpleLoan(userId);
     }
 
     @Override

@@ -77,7 +77,7 @@ public class RecommendationsRepository {
                 userId, userId, userId, 50000, userId, 50000, userId);
     }
 
-    public SearchResult getSearchResultSimpleCredit(String userId) {
+    public SearchResult getSearchResultSimpleLoan(String userId) {
         String sql = """
                 SELECT EXISTS (SELECT NULL
                                  FROM public.users u
