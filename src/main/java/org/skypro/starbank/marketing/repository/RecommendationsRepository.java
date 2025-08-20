@@ -15,9 +15,35 @@ public class RecommendationsRepository {
     }
 
     public SearchResult getSearchResult(String userId) {
+        String sql = """
+                SELECT
+                    EXISTS (SELECT 1 FROM users WHERE id = ?)
+                    AND EXISTS (
+                        SELECT 1
+                        FROM TRANSACTIONS t
+                        JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID
+                        WHERE t.USER_ID = ? AND p.TYPE = 'DEBIT'
+                    )
+                    AND NOT EXISTS (
+                        SELECT 1
+                        FROM TRANSACTIONS t
+                        JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID
+                        WHERE t.USER_ID = ? AND p.TYPE = 'INVEST'
+                    )
+                    AND COALESCE((
+                        SELECT SUM(t.AMOUNT)
+                        FROM TRANSACTIONS t
+                        JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID
+                        WHERE t.USER_ID = ?
+                        AND p.TYPE = 'SAVING'
+                        AND t.TYPE = 'DEPOSIT'
+                    ), 0) > 1000 AS result
+                """;
         return jdbcTemplate.queryForObject(
-                "SELECT EXISTS (SELECT NULL FROM public.users u WHERE u.id = ?) AND NOT EXISTS (SELECT NULL FROM public.transactions t JOIN public.products p ON p.id = t.product_id WHERE p.\"TYPE\" = 'INVEST' AND t.user_id = ?) AS \"result\"",
+                sql,
                 new SearchResultMapper(),
+                userId,
+                userId,
                 userId,
                 userId);
     }
