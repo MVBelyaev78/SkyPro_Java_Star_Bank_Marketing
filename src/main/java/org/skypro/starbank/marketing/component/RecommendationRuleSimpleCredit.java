@@ -7,6 +7,11 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 import java.util.UUID;
 
+import static java.lang.constant.ConstantDescs.NULL;
+import static javax.swing.text.html.HTML.Tag.SELECT;
+import static org.springframework.http.HttpHeaders.FROM;
+
+
 @Component
 public class RecommendationRuleSimpleCredit implements RecommendationRule {
     private final RecommendationsRepository recommendationsRepository;
@@ -21,17 +26,20 @@ public class RecommendationRuleSimpleCredit implements RecommendationRule {
 
     @Override
     public Optional<Recommendation> getRecommendation(UUID userId) {
-        Optional<Recommendation> recommendation;
-        if (recommendationsRepository
-                .getSimpleCreditEligibility(userId.toString())
-                .getResult()) {
-            recommendation = Optional.of(new Recommendation(
-                    "Простой кредит",
-                    "ab138afb-f3ba-4a93-b74f-0fcee86d447f",
-                    "Клиент может получить кредит: быстрое рассмотрение заявки, удобное оформление"));
-        } else {
-            recommendation = Optional.empty();
+
+        if (!recommendationsRepository.getSimpleCreditEligibility(userId.toString()).getResult()) {
+            return Optional.empty();
         }
-        return recommendation;
+
+
+        if (recommendationsRepository.hasActiveCredits(userId.toString())) {
+            return Optional.empty();
+        }
+
+
+        return Optional.of(new Recommendation(
+                "Простой кредит",
+                "ab138afb-f3ba-4a93-b74f-0fcee86d447f",
+                "Клиент может получить кредит: быстрое рассмотрение заявки, удобное оформление"));
     }
 }
