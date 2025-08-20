@@ -10,10 +10,10 @@ import java.util.*;
 
 @Service
 public class RecommendationService {
-    private final List<RecommendationRule> rules;
+    private final Collection<RecommendationRule> rules;
 
     @Autowired
-    public RecommendationService(List<RecommendationRule> rules) {
+    public RecommendationService(Collection<RecommendationRule> rules) {
         this.rules = rules;
     }
 
