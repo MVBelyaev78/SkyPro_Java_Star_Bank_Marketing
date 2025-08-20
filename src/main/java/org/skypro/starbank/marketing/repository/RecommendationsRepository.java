@@ -47,8 +47,8 @@ public class RecommendationsRepository {
                     JOIN products p ON p.id = t.product_id
                     WHERE p.type = 'DEBIT' AND t.user_id = ?
                 )> 0
-            ) AS all_conditions
+            ) AS result
             """;
-        return jdbcTemplate.queryForObject(sql, new SearchResultMapper(), userId, userId, 50000, userId, 50000, userId, userId);
+        return jdbcTemplate.queryForObject(sql, new SearchResultMapper(), userId, userId, userId, 50000, userId, 50000, userId);
     }
 }
