@@ -24,42 +24,26 @@ public class RecommendationsRepository {
                 userId);
     }
 
-    public boolean isUserHasDebitProduct(String userId) {
-        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(
-                "SELECT EXISTS( SELECT 1 FROM TRANSACTIONS t JOIN PRODUCT p ON t.PRODUCT_ID = p.ID WHERE t.USER_ID = ? AND p.TYPE = 'DEBIT') AS user_debit_product",
-                Boolean.class,
-                userId));
+    public SearchResult getRecommendationTopSaving(String userId) {
+        String sql = """
+            SELECT
+                EXISTS(
+                    SELECT 1 FROM TRANSACTIONS t
+                    JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID
+                    WHERE t.USER_ID = ? AND p.TYPE = 'DEBIT'
+                ) AS has_debit_product,
+                COALESCE(SUM(CASE WHEN p.type = 'DEBIT' AND t.type = 'DEPOSIT' THEN t.amount ELSE 0 END), 0) >= 50000
+                     AS debit_deposits_ge_50000,
+                COALESCE(SUM(CASE WHEN p.type = 'SAVING' AND t.type = 'DEPOSIT' THEN t.amount ELSE 0 END), 0) >= 50000
+                     AS saving_deposits_ge_50000,
+                COALESCE(SUM(CASE WHEN p.type = 'DEBIT' AND t.type = 'DEPOSIT' THEN t.amount ELSE 0 END), 0) > 
+                COALESCE(SUM(CASE WHEN p.type = 'DEBIT' AND t.type = 'WITHDRAW' THEN t.amount ELSE 0 END), 0)
+                     AS deposits_gt_withdrawals,
+                EXISTS(SELECT 1 FROM public.users u WHERE u.id = ?)
+                     AS user_exists
+            FROM transactions t
+            JOIN products p ON p.id = t.product_id
+            WHERE t.user_id = ? """;
+        return jdbcTemplate.queryForObject(sql, new SearchResultMapper(), userId, userId, userId);
     }
-
-    public boolean amountDepositsDEBITGreater50000(String userId) {
-        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(
-                "SELECT " +
-                        "COALESCE(SUM(transactions.amount), 0) >= 50000 " +
-                        "FROM transactions JOIN products ON products.id = transactions.product_id " +
-                        "WHERE products.type = 'DEBIT' AND transaction.type = 'DEPOSIT' AND transactions.user_id = ?",
-                Boolean.class,
-                userId));
-    }
-
-    public boolean amountDepositsSAVINGGreater50000(String userId) {
-        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(
-                "SELECT " +
-                        "COALESCE(SUM(transactions.amount), 0) >= 50000 " +
-                        "FROM transactions JOIN products ON products.id = transactions.product_id " +
-                        "WHERE products.type = 'SAVING' AND transaction.type = 'DEPOSIT' AND transactions.user_id = ?",
-                Boolean.class,
-                userId));
-    }
-
-    public boolean amountDepositsGreaterWithdraw(String userId) {
-        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(
-                "SELECT " +
-                        "COALESCE(SUM(CASE WHEN t.TYPE = 'DEPOSIT' THEN t.amount ELSE 0 END), 0) > " +
-                        "COALESCE(SUM(CASE WHEN t.TYPE = 'WITHDRAW' THEN t.amount ELSE 0 END), 0) " +
-                        "FROM transactions t JOIN products p ON p.id = t.product_id " +
-                        "WHERE p.TYPE = 'DEBIT' AND t.user_id = ?",
-                Boolean.class,
-                userId));
-    }
-
 }
