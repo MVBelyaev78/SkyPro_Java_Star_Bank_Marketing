@@ -7,10 +7,6 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 import java.util.UUID;
 
-import static java.lang.constant.ConstantDescs.NULL;
-import static javax.swing.text.html.HTML.Tag.SELECT;
-import static org.springframework.http.HttpHeaders.FROM;
-
 
 @Component
 public class RecommendationRuleSimpleCredit implements RecommendationRule {
