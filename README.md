@@ -119,6 +119,7 @@ CLOSED
 Ветка stage_1
 Эля
 3 ч
+CLOSED
 
 7. S1
 Михаил
