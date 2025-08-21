@@ -6,22 +6,17 @@ import org.skypro.starbank.marketing.dto.Recommendation;
 import java.util.Collection;
 import java.util.UUID;
 
-public class ServiceResult {
-    private final UUID userId;
-    private final Collection<Recommendation> recommendations;
+public record RecommendationServiceResult(UUID userId, Collection<Recommendation> recommendations) {
 
-    public ServiceResult(UUID userId, Collection<Recommendation> recommendations) {
-        this.recommendations = recommendations;
-        this.userId = userId;
-    }
-
+    @Override
     @JsonProperty("user_id")
-    public UUID getUserId() {
+    public UUID userId() {
         return userId;
     }
 
+    @Override
     @JsonProperty("recommendations")
-    public Collection<Recommendation> getRecommendations() {
+    public Collection<Recommendation> recommendations() {
         return recommendations;
     }
 }
