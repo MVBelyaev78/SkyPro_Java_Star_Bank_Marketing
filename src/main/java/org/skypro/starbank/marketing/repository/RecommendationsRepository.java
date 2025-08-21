@@ -37,7 +37,7 @@ public class RecommendationsRepository {
                         WHERE t.USER_ID = ?
                         AND p.TYPE = 'SAVING'
                         AND t.TYPE = 'DEPOSIT'
-                    ), 0) > 1000 AS result
+                    ), 0) > ? AS result
                 """;
         return jdbcTemplate.queryForObject(
                 sql,
@@ -45,7 +45,8 @@ public class RecommendationsRepository {
                 userId,
                 userId,
                 userId,
-                userId);
+                userId,
+                1000);
     }
 
     public SearchResult getSearchResultTopSaving(String userId) {
