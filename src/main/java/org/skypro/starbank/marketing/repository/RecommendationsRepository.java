@@ -102,6 +102,6 @@ public class RecommendationsRepository {
                    AS result
                 """;
         return jdbcTemplate.queryForObject(sql, new SearchResultMapper(),
-                userId, userId, userId, 10000, userId);
+                userId, userId, userId, 100000, userId);
     }
 }
