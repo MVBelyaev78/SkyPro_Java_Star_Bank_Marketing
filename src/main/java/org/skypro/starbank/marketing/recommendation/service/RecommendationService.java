@@ -18,7 +18,7 @@ public class RecommendationService {
     }
 
     public RecommendationServiceResult getServiceResult(UUID userId) {
-        final Collection<Recommendation> recommendations = new ArrayList<>();
+        final Collection<Recommendation> recommendations = new HashSet<>();
         rules.forEach(rule -> rule.getRecommendation(userId)
                 .ifPresent(recommendations::add));
         return new RecommendationServiceResult(userId, recommendations);
