@@ -6,7 +6,9 @@ import java.util.Collection;
 import java.util.UUID;
 
 public interface DynamicRulesDatabase {
-    DynamicRule addRules(DynamicRule rule);
+    DynamicRule addRule(DynamicRule rule);
+
     Collection<DynamicRule> getRules();
+
     void deleteRule(UUID recommendationUuid);
 }

@@ -1,6 +1,5 @@
 package org.skypro.starbank.marketing.dynamicrule.configuration;
 
-import org.skypro.starbank.marketing.dynamicrule.dto.ListingRules;
 import org.skypro.starbank.marketing.dynamicrule.dto.DynamicRule;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,7 +12,7 @@ public class DynamicRulesDatabaseEmulator implements DynamicRulesDatabase {
     Collection<DynamicRule> rules = new ArrayList<>();
 
     @Override
-    public DynamicRule addRules(DynamicRule ruleSource) {
+    public DynamicRule addRule(DynamicRule ruleSource) {
         DynamicRule result = new DynamicRule(
                 UUID.randomUUID(),
                 ruleSource.getName(),

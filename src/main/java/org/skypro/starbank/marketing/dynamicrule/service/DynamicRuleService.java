@@ -16,7 +16,7 @@ public class DynamicRuleService {
     }
 
     public DynamicRule addRules(DynamicRule rule) {
-        return databaseRules.addRules(rule);
+        return databaseRules.addRule(rule);
     }
 
     public ListingRules getListingRules() {
