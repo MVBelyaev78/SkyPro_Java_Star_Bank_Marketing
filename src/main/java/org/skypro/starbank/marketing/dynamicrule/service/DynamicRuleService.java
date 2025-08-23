@@ -20,7 +20,7 @@ public class DynamicRuleService {
     }
 
     public ListingRules getListingRules() {
-        return databaseRules.getListingRules();
+        return new ListingRules(databaseRules.getRulesCollection());
     }
 
     public void deleteRule(UUID recommendationUuid) {

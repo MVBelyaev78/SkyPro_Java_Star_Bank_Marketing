@@ -25,8 +25,8 @@ public class DynamicRulesDatabaseEmulator implements DynamicRulesDatabase {
     }
 
     @Override
-    public ListingRules getListingRules() {
-        return new ListingRules(rules);
+    public Collection<DynamicRule> getRulesCollection() {
+        return rules;
     }
 
     @Override
