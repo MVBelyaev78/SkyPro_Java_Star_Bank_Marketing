@@ -21,7 +21,7 @@ public abstract class RecommendationRuleImpl implements RecommendationRule {
     @Override
     public Optional<Recommendation> getRecommendation(UUID userId) {
         Optional<Recommendation> recommendation;
-        if (getSearchResult(userId.toString()).result()) {
+        if (getSearchResult(userId.toString()).getResult()) {
             recommendation = Optional.of(getNewRecommendation());
         } else {
             recommendation = Optional.empty();

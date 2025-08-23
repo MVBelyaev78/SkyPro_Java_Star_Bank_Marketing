@@ -1,6 +1,6 @@
 package org.skypro.starbank.marketing.dynamicrule.dto;
 
-import java.util.Collection;
+import java.util.List;
 
-public record QueryType(String query, Collection<String> arguments, Boolean negate) {
+public record QueryType(String query, List<String> arguments, Boolean negate) {
 }
