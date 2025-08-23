@@ -63,7 +63,7 @@ public class DynamicRulesRepository {
         }
         final Integer maxTransactionsCount = 5;
         final String sql = String.format("""
-                select %s ? < (
+                select %s ? <= (
                     select count(1)
                       from public.transactions t
                       join public.products p on p.id = t.product_id
