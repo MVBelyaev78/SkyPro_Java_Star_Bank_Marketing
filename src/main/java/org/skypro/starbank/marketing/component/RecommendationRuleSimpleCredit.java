@@ -13,6 +13,8 @@ public class RecommendationRuleSimpleCredit implements RecommendationRule {
         this.recommendationsRepository = recommendationsRepository;
     }
 
+
+
     public RecommendationsRepository getRecommendationsRepository() {
         return recommendationsRepository;
     }
