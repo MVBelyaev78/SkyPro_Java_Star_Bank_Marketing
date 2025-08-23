@@ -1,13 +1,13 @@
 package org.skypro.starbank.marketing.recommendation.component;
 
 import org.skypro.starbank.marketing.recommendation.dto.Recommendation;
-import org.skypro.starbank.marketing.recommendation.repository.RecommendationsRepository;
+import org.skypro.starbank.marketing.recommendation.repository.FixedRulesRepository;
 import org.skypro.starbank.marketing.recommendation.dto.SearchResult;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RecRuleSimpleLoan extends RecommendationRuleImpl {
-    public RecRuleSimpleLoan(RecommendationsRepository recommendationsRepository) {
+    public RecRuleSimpleLoan(FixedRulesRepository recommendationsRepository) {
         super(recommendationsRepository);
     }
 

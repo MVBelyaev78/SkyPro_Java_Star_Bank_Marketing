@@ -1,20 +1,20 @@
 package org.skypro.starbank.marketing.recommendation.component;
 
 import org.skypro.starbank.marketing.recommendation.dto.Recommendation;
-import org.skypro.starbank.marketing.recommendation.repository.RecommendationsRepository;
+import org.skypro.starbank.marketing.recommendation.repository.FixedRulesRepository;
 import org.skypro.starbank.marketing.recommendation.dto.SearchResult;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public abstract class RecommendationRuleImpl implements RecommendationRule {
-    private final RecommendationsRepository recommendationsRepository;
+    private final FixedRulesRepository recommendationsRepository;
 
-    public RecommendationRuleImpl(RecommendationsRepository recommendationsRepository) {
+    public RecommendationRuleImpl(FixedRulesRepository recommendationsRepository) {
         this.recommendationsRepository = recommendationsRepository;
     }
 
-    public RecommendationsRepository getRecommendationsRepository() {
+    public FixedRulesRepository getRecommendationsRepository() {
         return recommendationsRepository;
     }
 

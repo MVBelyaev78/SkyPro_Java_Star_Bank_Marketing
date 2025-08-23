@@ -1,13 +1,13 @@
 package org.skypro.starbank.marketing.recommendation.component;
 
 import org.skypro.starbank.marketing.recommendation.dto.Recommendation;
-import org.skypro.starbank.marketing.recommendation.repository.RecommendationsRepository;
+import org.skypro.starbank.marketing.recommendation.repository.FixedRulesRepository;
 import org.skypro.starbank.marketing.recommendation.dto.SearchResult;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RecRuleInvest500 extends RecommendationRuleImpl {
-    public RecRuleInvest500(RecommendationsRepository recommendationsRepository) {
+    public RecRuleInvest500(FixedRulesRepository recommendationsRepository) {
         super(recommendationsRepository);
     }
 
