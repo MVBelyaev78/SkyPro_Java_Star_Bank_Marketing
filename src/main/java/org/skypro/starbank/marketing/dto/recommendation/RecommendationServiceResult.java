@@ -1,7 +1,6 @@
-package org.skypro.starbank.marketing.result;
+package org.skypro.starbank.marketing.dto.recommendation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.skypro.starbank.marketing.dto.Recommendation;
 
 import java.util.Collection;
 import java.util.UUID;

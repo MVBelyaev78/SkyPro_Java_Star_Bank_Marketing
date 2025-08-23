@@ -1,8 +1,8 @@
 package org.skypro.starbank.marketing.service;
 
-import org.skypro.starbank.marketing.component.RecommendationRule;
-import org.skypro.starbank.marketing.dto.Recommendation;
-import org.skypro.starbank.marketing.result.RecommendationServiceResult;
+import org.skypro.starbank.marketing.component.recommendation.RecommendationRule;
+import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
+import org.skypro.starbank.marketing.dto.recommendation.RecommendationServiceResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

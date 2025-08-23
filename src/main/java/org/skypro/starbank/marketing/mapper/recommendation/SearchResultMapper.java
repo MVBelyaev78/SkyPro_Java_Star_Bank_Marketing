@@ -1,6 +1,6 @@
-package org.skypro.starbank.marketing.mapper;
+package org.skypro.starbank.marketing.mapper.recommendation;
 
-import org.skypro.starbank.marketing.result.SearchResult;
+import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

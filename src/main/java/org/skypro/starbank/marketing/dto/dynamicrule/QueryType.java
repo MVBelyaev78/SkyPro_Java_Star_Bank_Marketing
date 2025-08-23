@@ -1,4 +1,4 @@
-package org.skypro.starbank.marketing.temp_stage_2;
+package org.skypro.starbank.marketing.dto.dynamicrule;
 
 
 import java.util.Collection;

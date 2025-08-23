@@ -1,5 +1,7 @@
-package org.skypro.starbank.marketing.temp_stage_2;
+package org.skypro.starbank.marketing.configuration.dynamicrule;
 
+import org.skypro.starbank.marketing.dto.dynamicrule.ListingRules;
+import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
@@ -7,7 +9,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 @Configuration
-public class DatabaseRulesEmulator implements DatabaseRules {
+public class DynamicRulesDatabaseEmulator implements DynamicRulesDatabase {
     Collection<DynamicRule> rules = new ArrayList<>();
 
     @Override
@@ -29,6 +31,6 @@ public class DatabaseRulesEmulator implements DatabaseRules {
 
     @Override
     public void deleteRule(UUID recommendationUuid) {
-        rules.removeIf(rule -> rule.getRecommendationUuid() == recommendationUuid);
+        rules.removeIf(rule -> rule.getRecommendationUuid().equals(recommendationUuid));
     }
 }

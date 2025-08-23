@@ -1,6 +1,11 @@
-package org.skypro.starbank.marketing.temp_stage_2;
+package org.skypro.starbank.marketing.controller;
 
+import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
+import org.skypro.starbank.marketing.service.DynamicRuleService;
+import org.skypro.starbank.marketing.dto.dynamicrule.ListingRules;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/rule")
@@ -19,5 +24,10 @@ public class DynamicRuleController {
     @GetMapping("")
     public ListingRules getListingRules() {
         return dynamicRuleService.getListingRules();
+    }
+
+    @DeleteMapping("/{recommendationUuid}")
+    public void deleteRule(@PathVariable String recommendationUuid) {
+        dynamicRuleService.deleteRule(UUID.fromString(recommendationUuid));
     }
 }

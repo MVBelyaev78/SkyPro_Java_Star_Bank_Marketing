@@ -1,7 +1,7 @@
 package org.skypro.starbank.marketing.repository;
 
-import org.skypro.starbank.marketing.result.SearchResult;
-import org.skypro.starbank.marketing.mapper.SearchResultMapper;
+import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
+import org.skypro.starbank.marketing.mapper.recommendation.SearchResultMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
