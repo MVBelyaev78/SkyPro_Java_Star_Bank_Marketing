@@ -27,7 +27,7 @@ public class DynamicRecommendationRules {
         SearchResult searchResult = dynamicRulesRepository.getUserCheckQuery(userId.toString());
         dynamicRule.getRule()
                 .stream()
-                .map(queryType -> getComponentMethod(
+                .map(queryType -> getSearchMethod(
                     queryType.query(),
                     userId.toString(),
                     queryType.arguments(),
@@ -44,7 +44,7 @@ public class DynamicRecommendationRules {
         return recommendation;
     }
 
-    protected SearchResult getComponentMethod(String query, String userId, List<String> arguments, Boolean negate) {
+    protected SearchResult getSearchMethod(String query, String userId, List<String> arguments, Boolean negate) {
         SearchResult searchResult;
         if (query.equals("USER_OF")) {
             searchResult = getDynamicRulesRepository().getUserOfQuery(userId, arguments, negate);
