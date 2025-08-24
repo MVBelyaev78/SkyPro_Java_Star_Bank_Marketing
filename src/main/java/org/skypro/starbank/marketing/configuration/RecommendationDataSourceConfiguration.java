@@ -1,6 +1,5 @@
 package org.skypro.starbank.marketing.configuration;
 
-
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,8 +22,8 @@ public class RecommendationDataSourceConfiguration {
     public DataSource recommendationsDataSource(@Value("${application.recommendations-db.url}") String recommendationsUrl) {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(recommendationsUrl);
-        dataSource.setDriverClassName("org.h2.Driver");
-        dataSource.setReadOnly(true);
+        dataSource.setDriverClassName("org.h2.Driver"); // Убедитесь, что у вас есть зависимость H2 в pom.xml
+        dataSource.setReadOnly(true); // Если вы не планируете изменять данные, это правильно
         return dataSource;
     }
 
@@ -42,4 +41,3 @@ public class RecommendationDataSourceConfiguration {
         return cacheManager;
     }
 }
-

@@ -1,7 +1,8 @@
 package org.skypro.starbank.marketing.service;
 
 import org.skypro.starbank.marketing.dto.Recommendation;
-import org.skypro.starbank.marketing.dto.ServiceResult;
+import org.skypro.starbank.marketing.result.ServiceResult;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ import java.util.UUID;
 
 @Service
 public class RecommendationService {
+
+    @Cacheable(value = "recommendationsCache", key = "#userId")
     public ServiceResult getServiceResult(String userId) {
         final Collection<Recommendation> serviceResult = new ArrayList<>();
         serviceResult.add(new Recommendation("Yesterday",
@@ -21,3 +24,4 @@ public class RecommendationService {
         return new ServiceResult(UUID.fromString(userId), serviceResult);
     }
 }
+
