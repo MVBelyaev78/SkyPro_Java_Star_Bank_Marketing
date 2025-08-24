@@ -4,6 +4,7 @@ import org.skypro.starbank.marketing.component.dynamicrule.DynamicRecommendation
 import org.skypro.starbank.marketing.component.recommendation.RecommendationRule;
 import org.skypro.starbank.marketing.configuration.dynamicrule.DynamicRulesDatabase;
 import org.skypro.starbank.marketing.configuration.dynamicrule.DynamicRulesDatabaseEmulator;
+import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
 import org.skypro.starbank.marketing.dto.recommendation.RecommendationServiceResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +32,15 @@ public class RecommendationService {
         rules.forEach(recommendationRule -> recommendationRule.getRecommendation(userId)
                 .ifPresent(recommendations::add));
         DynamicRulesDatabase dynamicRulesDB = new DynamicRulesDatabaseEmulator();
-        dynamicRulesDB.getRules()
-                .stream()
-                .filter(dynamicRule -> dynRecRules.getSingleRecommendation(userId, dynamicRule).isPresent())
-                .map(dynamicRule -> new Recommendation(
-                    dynamicRule.getName(),
-                    dynamicRule.getUuid(),
-                    dynamicRule.getText()))
-                .forEach(recommendations::add);
+        for (DynamicRule dynamicRule : dynamicRulesDB.getRules()) {
+            if (dynRecRules.getSingleRecommendation(userId, dynamicRule).isPresent()) {
+                Recommendation recommendation = new Recommendation(
+                        dynamicRule.getName(),
+                        dynamicRule.getUuid(),
+                        dynamicRule.getText());
+                recommendations.add(recommendation);
+            }
+        }
         return new RecommendationServiceResult(userId, recommendations);
     }
 }

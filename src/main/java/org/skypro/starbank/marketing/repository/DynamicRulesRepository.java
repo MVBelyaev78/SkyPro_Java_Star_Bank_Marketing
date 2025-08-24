@@ -18,7 +18,7 @@ public class DynamicRulesRepository {
     }
 
     public SearchResult getUserCheckQuery(String userId) {
-        final String sql = "select exists (select null from public.users u where u.id = ?)";
+        final String sql = "select exists (select null from public.users u where u.id = ?) AS result";
         return jdbcTemplate.queryForObject(sql, new SearchResultMapper(), userId);
     }
 
@@ -29,9 +29,9 @@ public class DynamicRulesRepository {
         if (arguments.size() > 1) {
             throw new IllegalArgumentException("incorrect list of arguments");
         }
-        if (!arguments.get(0).toUpperCase(Locale.ROOT).equals("DEBIT") ||
-                !arguments.get(0).toUpperCase(Locale.ROOT).equals("CREDIT") ||
-                !arguments.get(0).toUpperCase(Locale.ROOT).equals("INVEST") ||
+        if (!arguments.get(0).toUpperCase(Locale.ROOT).equals("DEBIT") &&
+                !arguments.get(0).toUpperCase(Locale.ROOT).equals("CREDIT") &&
+                !arguments.get(0).toUpperCase(Locale.ROOT).equals("INVEST") &&
                 !arguments.get(0).toUpperCase(Locale.ROOT).equals("SAVING")) {
             throw new IllegalArgumentException("incorrect list of arguments");
         }
@@ -42,7 +42,7 @@ public class DynamicRulesRepository {
                       join public.products p on p.id = t.product_id
                      where t.user_id = ?
                        and p."TYPE" = ?
-                )
+                ) AS result
                 """, negate ? "not" : "");
         return jdbcTemplate.queryForObject(sql,
                 new SearchResultMapper(),

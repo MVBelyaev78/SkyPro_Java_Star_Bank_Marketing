@@ -52,6 +52,6 @@ public class DynamicRecommendationRules {
         if (query.equals("USER_OF")) {
             return getDynamicRulesRepository().getUserOfQuery(userId, arguments, negate);
         }
-        return new SearchResult(true);
+        return new SearchResult(false);
     }
 }
