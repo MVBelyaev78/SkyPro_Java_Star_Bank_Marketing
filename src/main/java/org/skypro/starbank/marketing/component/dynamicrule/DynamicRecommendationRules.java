@@ -20,14 +20,6 @@ public class DynamicRecommendationRules {
         this.searchMethodFactory = searchMethodFactory;
     }
 
-    public DynamicRulesRepository getDynamicRulesRepository() {
-        return dynamicRulesRepository;
-    }
-
-    public SearchMethodFactory getSearchMethodFactory() {
-        return searchMethodFactory;
-    }
-
     public Optional<Recommendation> getSingleRecommendation(UUID userId, DynamicRule dynamicRule) {
         Optional<Recommendation> recommendation;
         SearchResult searchResult = dynamicRulesRepository.getUserCheckQuery(userId.toString());

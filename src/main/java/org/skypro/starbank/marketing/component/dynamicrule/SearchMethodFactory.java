@@ -14,10 +14,6 @@ public class SearchMethodFactory {
         this.dynamicRulesRepository = dynamicRulesRepository;
     }
 
-    public DynamicRulesRepository getDynamicRulesRepository() {
-        return dynamicRulesRepository;
-    }
-
     public SearchResult getSearchMethod(String query, String userId, List<String> arguments, Boolean negate) {
         SearchResult searchResult;
         if (query.equals("USER_OF")) {
