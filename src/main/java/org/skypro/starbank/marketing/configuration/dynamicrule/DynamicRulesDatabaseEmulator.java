@@ -16,11 +16,11 @@ public class DynamicRulesDatabaseEmulator implements DynamicRulesDatabase {
                 Collections.singletonList("DEBIT"),
                 false);
         rules = new ArrayList<DynamicRule>(Collections.singleton(new DynamicRule(
-                UUID.fromString("7bf8faa7-fdcc-4bbb-b222-1b25fe436e61"),
-                "Пробная динамическая рекомендация",
-                UUID.fromString("5f3062c1-9f37-4e98-8912-d97dcafba800"),
-                "текст рекомендации",
-                Collections.singletonList(queryType))));
+                    UUID.fromString("7bf8faa7-fdcc-4bbb-b222-1b25fe436e61"),
+                    "Пробная динамическая рекомендация",
+                    UUID.fromString("5f3062c1-9f37-4e98-8912-d97dcafba800"),
+                    "текст рекомендации",
+                    Collections.singletonList(queryType))));
     }
 
     @Override
