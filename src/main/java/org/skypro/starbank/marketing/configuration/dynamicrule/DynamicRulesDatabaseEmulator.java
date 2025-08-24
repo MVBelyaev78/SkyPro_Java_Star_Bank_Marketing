@@ -42,6 +42,6 @@ public class DynamicRulesDatabaseEmulator implements DynamicRulesDatabase {
 
     @Override
     public void deleteRule(UUID recommendationUuid) {
-        //rules.removeIf(rule -> rule.getRecommendationUuid().equals(recommendationUuid));
+        rules.removeIf(rule -> rule.getRecommendationUuid().equals(recommendationUuid));
     }
 }
