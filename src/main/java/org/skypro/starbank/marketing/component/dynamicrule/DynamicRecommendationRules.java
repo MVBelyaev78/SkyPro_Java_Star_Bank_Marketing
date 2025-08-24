@@ -13,13 +13,19 @@ import java.util.UUID;
 @Component
 public class DynamicRecommendationRules {
     private final DynamicRulesRepository dynamicRulesRepository;
+    private final SearchMethodFactory searchMethodFactory;
 
-    public DynamicRecommendationRules(DynamicRulesRepository dynamicRulesRepository) {
+    public DynamicRecommendationRules(DynamicRulesRepository dynamicRulesRepository, SearchMethodFactory searchMethodFactory) {
         this.dynamicRulesRepository = dynamicRulesRepository;
+        this.searchMethodFactory = searchMethodFactory;
     }
 
     public DynamicRulesRepository getDynamicRulesRepository() {
         return dynamicRulesRepository;
+    }
+
+    public SearchMethodFactory getSearchMethodFactory() {
+        return searchMethodFactory;
     }
 
     public Optional<Recommendation> getSingleRecommendation(UUID userId, DynamicRule dynamicRule) {
@@ -27,7 +33,7 @@ public class DynamicRecommendationRules {
         SearchResult searchResult = dynamicRulesRepository.getUserCheckQuery(userId.toString());
         dynamicRule.getRule()
                 .stream()
-                .map(queryType -> getSearchMethod(
+                .map(queryType -> searchMethodFactory.getSearchMethod(
                     queryType.query(),
                     userId.toString(),
                     queryType.arguments(),
@@ -42,17 +48,5 @@ public class DynamicRecommendationRules {
             recommendation = Optional.empty();
         }
         return recommendation;
-    }
-
-    protected SearchResult getSearchMethod(String query, String userId, List<String> arguments, Boolean negate) {
-        SearchResult searchResult;
-        if (query.equals("USER_OF")) {
-            searchResult = getDynamicRulesRepository().getUserOfQuery(userId, arguments, negate);
-        } else if (query.equals("ACTIVE_USER_OF")) {
-            searchResult = getDynamicRulesRepository().getActiveUserOfQuery(userId, arguments, negate);
-        } else {
-            searchResult = new SearchResult(false);
-        }
-        return searchResult;
     }
 }
