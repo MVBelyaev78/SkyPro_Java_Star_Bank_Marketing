@@ -6,16 +6,15 @@ import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.skypro.starbank.marketing.repository.DynamicRulesRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Component
 public class DynamicRecommendationRules {
     private final DynamicRulesRepository dynamicRulesRepository;
-    private final SearchMethodFactory searchMethodFactory;
+    private final DynamicRecommendationSearchMethodFactory searchMethodFactory;
 
-    public DynamicRecommendationRules(DynamicRulesRepository dynamicRulesRepository, SearchMethodFactory searchMethodFactory) {
+    public DynamicRecommendationRules(DynamicRulesRepository dynamicRulesRepository, DynamicRecommendationSearchMethodFactory searchMethodFactory) {
         this.dynamicRulesRepository = dynamicRulesRepository;
         this.searchMethodFactory = searchMethodFactory;
     }

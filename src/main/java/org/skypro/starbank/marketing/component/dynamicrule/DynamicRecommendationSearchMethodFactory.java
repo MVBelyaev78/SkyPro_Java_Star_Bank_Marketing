@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class SearchMethodFactory {
+public class DynamicRecommendationSearchMethodFactory {
     private final DynamicRulesRepository dynamicRulesRepository;
 
-    public SearchMethodFactory(DynamicRulesRepository dynamicRulesRepository) {
+    public DynamicRecommendationSearchMethodFactory(DynamicRulesRepository dynamicRulesRepository) {
         this.dynamicRulesRepository = dynamicRulesRepository;
     }
 
