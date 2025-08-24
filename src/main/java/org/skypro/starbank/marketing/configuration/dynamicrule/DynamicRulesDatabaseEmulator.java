@@ -11,16 +11,15 @@ public class DynamicRulesDatabaseEmulator implements DynamicRulesDatabase {
     Collection<DynamicRule> rules;
 
     public DynamicRulesDatabaseEmulator() {
-        final QueryType queryType = new QueryType(
-                "USER_OF",
-                Collections.singletonList("DEBIT"),
-                false);
+        Collection<QueryType> queryTypes = new ArrayList<>();
+        queryTypes.add(new QueryType("USER_OF", Collections.singletonList("DEBIT"), false));
+        queryTypes.add(new QueryType("ACTIVE_USER_OF", Collections.singletonList("CREDIT"),true));
         rules = new ArrayList<DynamicRule>(Collections.singleton(new DynamicRule(
                     UUID.fromString("7bf8faa7-fdcc-4bbb-b222-1b25fe436e61"),
                     "Пробная динамическая рекомендация",
                     UUID.fromString("5f3062c1-9f37-4e98-8912-d97dcafba800"),
                     "текст рекомендации",
-                    Collections.singletonList(queryType))));
+                    queryTypes)));
     }
 
     @Override

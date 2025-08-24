@@ -31,14 +31,14 @@ public class DynamicRecommendationRules {
         if (!searchResult.getResult()) {
             return Optional.empty();
         }
-        for (QueryType queryType : dynamicRule.getRule()) {
-            final SearchResult sr = getComponentMethod(
+        dynamicRule.getRule()
+                .stream()
+                .map(queryType -> getComponentMethod(
                     queryType.query(),
                     userId.toString(),
                     queryType.arguments(),
-                    queryType.negate());
-            searchResult.setResult(searchResult.getResult() && sr.getResult());
-        }
+                    queryType.negate()))
+                .forEach(sr -> searchResult.setResult(searchResult.getResult() && sr.getResult()));
         if (!searchResult.getResult()) {
             return Optional.empty();
         }
@@ -51,6 +51,8 @@ public class DynamicRecommendationRules {
     protected SearchResult getComponentMethod(String query, String userId, List<String> arguments, Boolean negate) {
         if (query.equals("USER_OF")) {
             return getDynamicRulesRepository().getUserOfQuery(userId, arguments, negate);
+        } else if (query.equals("ACTIVE_USER_OF")) {
+            return getDynamicRulesRepository().getActiveUserOfQuery(userId, arguments, negate);
         }
         return new SearchResult(false);
     }

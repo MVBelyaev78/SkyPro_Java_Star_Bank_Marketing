@@ -31,16 +31,17 @@ public class RecommendationService {
         final Collection<Recommendation> recommendations = new HashSet<>();
         rules.forEach(recommendationRule -> recommendationRule.getRecommendation(userId)
                 .ifPresent(recommendations::add));
-        DynamicRulesDatabase dynamicRulesDB = new DynamicRulesDatabaseEmulator();
-        for (DynamicRule dynamicRule : dynamicRulesDB.getRules()) {
-            if (dynRecRules.getSingleRecommendation(userId, dynamicRule).isPresent()) {
-                Recommendation recommendation = new Recommendation(
-                        dynamicRule.getName(),
-                        dynamicRule.getUuid(),
-                        dynamicRule.getText());
-                recommendations.add(recommendation);
-            }
-        }
+        final DynamicRulesDatabase dynamicRulesDB = new DynamicRulesDatabaseEmulator();
+        dynamicRulesDB.getRules()
+                .stream()
+                .filter(dynamicRule -> dynRecRules
+                        .getSingleRecommendation(userId, dynamicRule)
+                        .isPresent())
+                .map(dynamicRule -> new Recommendation(
+                    dynamicRule.getName(),
+                    dynamicRule.getUuid(),
+                    dynamicRule.getText()))
+                .forEach(recommendations::add);
         return new RecommendationServiceResult(userId, recommendations);
     }
 }
