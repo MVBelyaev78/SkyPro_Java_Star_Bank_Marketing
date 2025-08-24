@@ -5,12 +5,14 @@ import org.skypro.starbank.marketing.dynamicrule.dto.QueryType;
 import org.skypro.starbank.marketing.recommendation.dto.Recommendation;
 import org.skypro.starbank.marketing.recommendation.dto.SearchResult;
 import org.skypro.starbank.marketing.recommendation.repository.DynamicRulesRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class DynamicRecommendationRules {
+@Component
+public class DynamicRecommendationRules {
     private final DynamicRulesRepository dynamicRulesRepository;
 
     public DynamicRecommendationRules(DynamicRulesRepository dynamicRulesRepository) {
@@ -46,5 +48,10 @@ public abstract class DynamicRecommendationRules {
                 dynamicRule.getText()));
     }
 
-    protected abstract SearchResult getComponentMethod(String query, String userId, List<String> arguments, Boolean negate);
+    protected SearchResult getComponentMethod(String query, String userId, List<String> arguments, Boolean negate) {
+        if (query.equals("USER_OF")) {
+            return getDynamicRulesRepository().getUserOfQuery(userId, arguments, negate);
+        }
+        return new SearchResult(true);
+    }
 }
