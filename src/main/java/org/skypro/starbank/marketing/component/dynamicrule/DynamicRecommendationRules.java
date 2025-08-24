@@ -1,7 +1,6 @@
 package org.skypro.starbank.marketing.component.dynamicrule;
 
 import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
-import org.skypro.starbank.marketing.dto.dynamicrule.QueryType;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
 import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.skypro.starbank.marketing.repository.DynamicRulesRepository;
@@ -24,13 +23,8 @@ public class DynamicRecommendationRules {
     }
 
     public Optional<Recommendation> getSingleRecommendation(UUID userId, DynamicRule dynamicRule) {
-        if (dynamicRule.getRule().isEmpty()) {
-            return Optional.empty();
-        }
+        Optional<Recommendation> recommendation;
         SearchResult searchResult = dynamicRulesRepository.getUserCheckQuery(userId.toString());
-        if (!searchResult.getResult()) {
-            return Optional.empty();
-        }
         dynamicRule.getRule()
                 .stream()
                 .map(queryType -> getComponentMethod(
@@ -39,21 +33,26 @@ public class DynamicRecommendationRules {
                     queryType.arguments(),
                     queryType.negate()))
                 .forEach(sr -> searchResult.setResult(searchResult.getResult() && sr.getResult()));
-        if (!searchResult.getResult()) {
-            return Optional.empty();
+        if (searchResult.getResult()) {
+            recommendation = Optional.of(new Recommendation(
+                    dynamicRule.getName(),
+                    dynamicRule.getRecommendationUuid(),
+                    dynamicRule.getText()));
+        } else {
+            recommendation = Optional.empty();
         }
-        return Optional.of(new Recommendation(
-                dynamicRule.getName(),
-                dynamicRule.getRecommendationUuid(),
-                dynamicRule.getText()));
+        return recommendation;
     }
 
     protected SearchResult getComponentMethod(String query, String userId, List<String> arguments, Boolean negate) {
+        SearchResult searchResult;
         if (query.equals("USER_OF")) {
-            return getDynamicRulesRepository().getUserOfQuery(userId, arguments, negate);
+            searchResult = getDynamicRulesRepository().getUserOfQuery(userId, arguments, negate);
         } else if (query.equals("ACTIVE_USER_OF")) {
-            return getDynamicRulesRepository().getActiveUserOfQuery(userId, arguments, negate);
+            searchResult = getDynamicRulesRepository().getActiveUserOfQuery(userId, arguments, negate);
+        } else {
+            searchResult = new SearchResult(false);
         }
-        return new SearchResult(false);
+        return searchResult;
     }
 }
