@@ -1,5 +1,6 @@
 package org.skypro.starbank.marketing.component.recommendation;
 
+import org.skypro.starbank.marketing.auxiliary.NewCollection;
 import org.skypro.starbank.marketing.component.dynamicrule.DynamicRecommendationRules;
 import org.skypro.starbank.marketing.configuration.dynamicrule.DynamicRulesDatabase;
 import org.skypro.starbank.marketing.configuration.dynamicrule.DynamicRulesDatabaseEmulator;
@@ -21,9 +22,10 @@ public class RecommendationCollectDynamic implements RecommendationCollect {
 
     @Override
     public Collection<Recommendation> getRecommendations(UUID userId) {
-        final Collection<Recommendation> recommendations = new HashSet<>();
+        final Collection<Recommendation> recommendations = new NewCollection<Recommendation>().initCollection();
         final DynamicRulesDatabase dynamicRulesDB = new DynamicRulesDatabaseEmulator();
-        dynamicRulesDB.getRules()
+        dynamicRulesDB
+                .getRules()
                 .stream()
                 .filter(dynamicRule -> dynRecRules
                         .getSingleRecommendation(userId, dynamicRule)

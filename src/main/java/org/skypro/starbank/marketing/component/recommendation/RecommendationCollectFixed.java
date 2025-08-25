@@ -1,5 +1,6 @@
 package org.skypro.starbank.marketing.component.recommendation;
 
+import org.skypro.starbank.marketing.auxiliary.NewCollection;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ public class RecommendationCollectFixed implements RecommendationCollect {
 
     @Override
     public Collection<Recommendation> getRecommendations(UUID userId) {
-        final Collection<Recommendation> recommendations = new HashSet<>();
+        final Collection<Recommendation> recommendations = new NewCollection<Recommendation>().initCollection();
         fixedRecRules.forEach(fixedRecRule -> fixedRecRule
                 .getRecommendation(userId)
                 .ifPresent(recommendations::add));
