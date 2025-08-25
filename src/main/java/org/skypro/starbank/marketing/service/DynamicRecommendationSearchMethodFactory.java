@@ -15,10 +15,10 @@ public class DynamicRecommendationSearchMethodFactory {
     @Autowired
     private List<DynRecRuleSearchMethod> dynRecRuleSearchMethods;
 
-    private static final Map<String, DynRecRuleSearchMethod> serviceCache = new HashMap<>();
+    private final Map<String, DynRecRuleSearchMethod> serviceCache = new HashMap<>();
 
     @PostConstruct
-    public void initServiceCache() {
+    private void initServiceCache() {
         dynRecRuleSearchMethods
                 .forEach(searchMethod -> serviceCache.put(searchMethod.getQuery(), searchMethod));
     }
