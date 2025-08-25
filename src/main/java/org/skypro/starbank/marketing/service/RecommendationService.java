@@ -4,7 +4,6 @@ import org.skypro.starbank.marketing.component.dynamicrule.DynamicRecommendation
 import org.skypro.starbank.marketing.component.recommendation.RecommendationRule;
 import org.skypro.starbank.marketing.configuration.dynamicrule.DynamicRulesDatabase;
 import org.skypro.starbank.marketing.configuration.dynamicrule.DynamicRulesDatabaseEmulator;
-import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
 import org.skypro.starbank.marketing.dto.recommendation.RecommendationServiceResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class RecommendationService {
 
     public RecommendationServiceResult getServiceResult(UUID userId) {
         final Collection<Recommendation> recommendations = new HashSet<>();
-        fixedRecRules.forEach(fixedREcRule -> fixedREcRule
+        fixedRecRules.forEach(fixedRecRule -> fixedRecRule
                 .getRecommendation(userId)
                 .ifPresent(recommendations::add));
         final DynamicRulesDatabase dynamicRulesDB = new DynamicRulesDatabaseEmulator();
