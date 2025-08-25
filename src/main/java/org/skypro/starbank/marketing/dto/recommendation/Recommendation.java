@@ -1,4 +1,4 @@
-package org.skypro.starbank.marketing.dto;
+package org.skypro.starbank.marketing.dto.recommendation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;

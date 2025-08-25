@@ -1,16 +1,16 @@
 package org.skypro.starbank.marketing.repository;
 
-import org.skypro.starbank.marketing.result.SearchResult;
+import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.skypro.starbank.marketing.mapper.SearchResultMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class RecommendationsRepository {
+public class FixedRulesRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public RecommendationsRepository(@Qualifier("recommendationsJdbcTemplate") JdbcTemplate jdbcTemplate) {
+    public FixedRulesRepository(@Qualifier("recommendationsJdbcTemplate") JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -37,7 +37,7 @@ public class RecommendationsRepository {
                         WHERE t.USER_ID = ?
                         AND p.TYPE = 'SAVING'
                         AND t.TYPE = 'DEPOSIT'
-                    ), 0) > 1000 AS result
+                    ), 0) > ? AS result
                 """;
         return jdbcTemplate.queryForObject(
                 sql,
@@ -45,7 +45,8 @@ public class RecommendationsRepository {
                 userId,
                 userId,
                 userId,
-                userId);
+                userId,
+                1000);
     }
 
     public SearchResult getSearchResultTopSaving(String userId) {
@@ -102,6 +103,6 @@ public class RecommendationsRepository {
                    AS result
                 """;
         return jdbcTemplate.queryForObject(sql, new SearchResultMapper(),
-                userId, userId, userId, 10000, userId);
+                userId, userId, userId, 100000, userId);
     }
 }
