@@ -22,10 +22,6 @@ public class RecommendationService {
         this.dynRecRules = dynRecRules;
     }
 
-    public DynamicRecommendationRules getDynRecRules() {
-        return dynRecRules;
-    }
-
     public RecommendationServiceResult getServiceResult(UUID userId) {
         final Collection<Recommendation> recommendations = new HashSet<>();
         fixedRecRules.forEach(fixedRecRule -> fixedRecRule
