@@ -1,5 +1,7 @@
 package org.skypro.starbank.marketing.service;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.skypro.starbank.marketing.component.dynamicrule.DynamicRecommendationRules;
 import org.skypro.starbank.marketing.component.recommendation.RecommendationRule;
 import org.skypro.starbank.marketing.configuration.dynamicrule.DynamicRulesDatabase;
@@ -27,7 +29,10 @@ public class RecommendationService {
         return dynRecRules;
     }
 
-    public RecommendationServiceResult getServiceResult(UUID userId) {
+    @Operation(summary = "Получить рекомендации",
+            description = "Генерирует персонализированные рекомендации на основе фиксированных и динамических правил")
+    public RecommendationServiceResult getServiceResult(@Parameter(description = "UUID пользователя", example = "123e4567-e89b-12d3-a456-426614174000")
+                                                            UUID userId) {
         final Collection<Recommendation> recommendations = new HashSet<>();
         rules.forEach(recommendationRule -> recommendationRule.getRecommendation(userId)
                 .ifPresent(recommendations::add));

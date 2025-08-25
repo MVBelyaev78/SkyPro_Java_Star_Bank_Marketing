@@ -1,5 +1,7 @@
 package org.skypro.starbank.marketing.repository;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.skypro.starbank.marketing.mapper.SearchResultMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,12 +19,17 @@ public class DynamicRulesRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public SearchResult getUserCheckQuery(String userId) {
+    @Operation(summary = "Проверка пользователя", description = "Проверяет, существует ли пользователь в системе")
+    public SearchResult getUserCheckQuery(@Parameter(description = "UUID пользователя") String userId) {
         final String sql = "select exists (select null from public.users u where u.id = ?) AS result";
         return jdbcTemplate.queryForObject(sql, new SearchResultMapper(), userId);
     }
 
-    public SearchResult getUserOfQuery(String userId, List<String> arguments, Boolean negate) {
+    @Operation(summary = "Проверка типа продукта",
+            description = "Проверяет, является ли пользователь клиентом определенного типа продукта")
+    public SearchResult getUserOfQuery(@Parameter(description = "UUID пользователя") String userId,
+                                       @Parameter(description = "Тип продукта [DEBIT/CREDIT/INVEST/SAVING]") List<String> arguments,
+                                       @Parameter(description = "Инвертировать результат") Boolean negate) {
         if (arguments.isEmpty()) {
             throw new IllegalArgumentException("incorrect list of arguments");
         }
@@ -50,7 +57,11 @@ public class DynamicRulesRepository {
                 arguments.get(0).toUpperCase(Locale.ROOT));
     }
 
-    public SearchResult getActiveUserOfQuery(String userId, List<String> arguments, Boolean negate) {
+    @Operation(summary = "Проверка активного использования",
+            description = "Проверяет, активно ли пользователь использует продукт определенного типа")
+    public SearchResult getActiveUserOfQuery(@Parameter(description = "UUID пользователя") String userId,
+                                             @Parameter(description = "Тип продукта [DEBIT/CREDIT/INVEST/SAVING]") List<String> arguments,
+                                             @Parameter(description = "Инвертировать результат") Boolean negate) {
         if (arguments.isEmpty()) {
             throw new IllegalArgumentException("incorrect list of arguments");
         }
