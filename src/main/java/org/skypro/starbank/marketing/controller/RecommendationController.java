@@ -3,6 +3,7 @@ package org.skypro.starbank.marketing.controller;
 import org.skypro.starbank.marketing.service.RecommendationService;
 import org.skypro.starbank.marketing.result.ServiceResult;
 import org.springframework.cache.annotation.Cacheable;
+import org.skypro.starbank.marketing.dto.recommendation.RecommendationServiceResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

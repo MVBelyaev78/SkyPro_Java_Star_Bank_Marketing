@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class StarBankMarketingApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(StarBankMarketingApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(StarBankMarketingApplication.class, args);
+    }
 
 }
