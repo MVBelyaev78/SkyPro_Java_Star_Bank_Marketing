@@ -4,6 +4,7 @@ import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
 import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.skypro.starbank.marketing.repository.DynamicRulesRepository;
+import org.skypro.starbank.marketing.service.DynamicRecommendationSearchMethodFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
