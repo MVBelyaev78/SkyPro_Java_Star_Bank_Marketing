@@ -17,6 +17,7 @@ public class RecommendationService {
     public RecommendationService(Collection<RecommendationCollect> recommendationCollects) {
         this.recommendationCollects = recommendationCollects;
     }
+
     public RecommendationServiceResult getServiceResult(UUID userId) {
         final Collection<Recommendation> recResult = new NewCollection<Recommendation>().initCollection();
         recommendationCollects

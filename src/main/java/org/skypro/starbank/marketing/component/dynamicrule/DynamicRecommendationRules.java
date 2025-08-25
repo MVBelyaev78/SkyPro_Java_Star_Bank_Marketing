@@ -25,10 +25,10 @@ public class DynamicRecommendationRules {
         dynamicRule.getRule()
                 .stream()
                 .map(queryType -> searchMethodFactory.getSearchMethod(
-                    queryType.query(),
-                    userId.toString(),
-                    queryType.arguments(),
-                    queryType.negate()))
+                        queryType.query(),
+                        userId.toString(),
+                        queryType.arguments(),
+                        queryType.negate()))
                 .forEach(sr -> searchResult.setResult(searchResult.getResult() && sr.getResult()));
         if (searchResult.getResult()) {
             recommendation = Optional.of(new Recommendation(
