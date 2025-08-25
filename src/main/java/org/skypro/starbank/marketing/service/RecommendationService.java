@@ -4,20 +4,21 @@ import org.skypro.starbank.marketing.auxiliary.NewCollection;
 import org.skypro.starbank.marketing.component.recommendation.collect.RecommendationCollect;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
 import org.skypro.starbank.marketing.dto.recommendation.RecommendationServiceResult;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.UUID;
 
 @Service
 public class RecommendationService {
     private final Collection<RecommendationCollect> recommendationCollects;
 
-    @Autowired
     public RecommendationService(Collection<RecommendationCollect> recommendationCollects) {
         this.recommendationCollects = recommendationCollects;
     }
 
+    @Cacheable(value = "recommendationsCache", key = "#userId")
     public RecommendationServiceResult getServiceResult(UUID userId) {
         final Collection<Recommendation> recResult = new NewCollection<Recommendation>().initCollection();
         recommendationCollects
@@ -27,3 +28,4 @@ public class RecommendationService {
         return new RecommendationServiceResult(userId, recResult);
     }
 }
+
