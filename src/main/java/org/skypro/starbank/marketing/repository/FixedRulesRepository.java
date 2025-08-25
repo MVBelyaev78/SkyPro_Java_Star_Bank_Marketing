@@ -1,20 +1,24 @@
 package org.skypro.starbank.marketing.repository;
 
-import org.skypro.starbank.marketing.result.SearchResult;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.skypro.starbank.marketing.mapper.SearchResultMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class RecommendationsRepository {
+public class FixedRulesRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public RecommendationsRepository(@Qualifier("recommendationsJdbcTemplate") JdbcTemplate jdbcTemplate) {
+    public FixedRulesRepository(@Qualifier("recommendationsJdbcTemplate") JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public SearchResult getSearchResultInvest500(String userId) {
+    @Operation(summary = "Проверка для Invest 500",
+            description = "Проверяет условия для рекомендации инвестиционного продукта")
+    public SearchResult getSearchResultInvest500(@Parameter(description = "UUID пользователя") String userId) {
         String sql = """
                 SELECT
                     EXISTS (SELECT 1 FROM users WHERE id = ?)
@@ -49,7 +53,9 @@ public class RecommendationsRepository {
                 1000);
     }
 
-    public SearchResult getSearchResultTopSaving(String userId) {
+    @Operation(summary = "Проверка для Top Saving",
+            description = "Проверяет условия для рекомендации сберегательного продукта")
+    public SearchResult getSearchResultTopSaving(@Parameter(description = "UUID пользователя") String userId) {
         String sql = """
             SELECT (
                 EXISTS (SELECT 1 FROM public.users u WHERE u.id = ?)
@@ -78,7 +84,9 @@ public class RecommendationsRepository {
                 userId, userId, userId, 50000, userId, 50000, userId);
     }
 
-    public SearchResult getSearchResultSimpleLoan(String userId) {
+    @Operation(summary = "Проверка для Простого кредита",
+            description = "Проверяет условия для рекомендации кредитного продукта")
+    public SearchResult getSearchResultSimpleLoan(@Parameter(description = "UUID пользователя") String userId) {
         String sql = """
                 SELECT EXISTS (SELECT NULL
                                  FROM public.users u
