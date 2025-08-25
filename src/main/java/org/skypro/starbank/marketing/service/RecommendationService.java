@@ -1,7 +1,7 @@
 package org.skypro.starbank.marketing.service;
 
 import org.skypro.starbank.marketing.component.dynamicrule.DynamicRecommendationRules;
-import org.skypro.starbank.marketing.component.recommendation.RecommendationRule;
+import org.skypro.starbank.marketing.component.recommendation.RecommendationCollect;
 import org.skypro.starbank.marketing.configuration.dynamicrule.DynamicRulesDatabase;
 import org.skypro.starbank.marketing.configuration.dynamicrule.DynamicRulesDatabaseEmulator;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
@@ -13,20 +13,19 @@ import java.util.*;
 
 @Service
 public class RecommendationService {
-    private final Collection<RecommendationRule> fixedRecRules;
     private final DynamicRecommendationRules dynRecRules;
+    private final Collection<RecommendationCollect> recommendationCollects;
 
     @Autowired
-    public RecommendationService(Collection<RecommendationRule> fixedREcRules, DynamicRecommendationRules dynRecRules) {
-        this.fixedRecRules = fixedREcRules;
+    public RecommendationService(DynamicRecommendationRules dynRecRules, Collection<RecommendationCollect> recommendationCollects) {
         this.dynRecRules = dynRecRules;
+        this.recommendationCollects = recommendationCollects;
     }
-
     public RecommendationServiceResult getServiceResult(UUID userId) {
-        final Collection<Recommendation> recommendations = new HashSet<>();
-        fixedRecRules.forEach(fixedRecRule -> fixedRecRule
-                .getRecommendation(userId)
-                .ifPresent(recommendations::add));
+        final Collection<Recommendation> recResult = new HashSet<>();
+        for (RecommendationCollect recCollect : recommendationCollects) {
+            recResult.addAll(recCollect.getRecommendations(userId));
+        }
         final DynamicRulesDatabase dynamicRulesDB = new DynamicRulesDatabaseEmulator();
         dynamicRulesDB.getRules()
                 .stream()
@@ -37,7 +36,7 @@ public class RecommendationService {
                     dynamicRule.getName(),
                     dynamicRule.getUuid(),
                     dynamicRule.getText()))
-                .forEach(recommendations::add);
-        return new RecommendationServiceResult(userId, recommendations);
+                .forEach(recResult::add);
+        return new RecommendationServiceResult(userId, recResult);
     }
 }
