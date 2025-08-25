@@ -1,4 +1,4 @@
-package org.skypro.starbank.marketing.component.recommendation;
+package org.skypro.starbank.marketing.component.recommendation.collect;
 
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
 

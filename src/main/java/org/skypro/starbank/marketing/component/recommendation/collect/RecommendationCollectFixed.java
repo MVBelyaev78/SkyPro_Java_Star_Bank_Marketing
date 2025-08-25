@@ -1,11 +1,11 @@
-package org.skypro.starbank.marketing.component.recommendation;
+package org.skypro.starbank.marketing.component.recommendation.collect;
 
 import org.skypro.starbank.marketing.auxiliary.NewCollection;
+import org.skypro.starbank.marketing.component.recommendation.rule.RecommendationRule;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.UUID;
 
 @Component

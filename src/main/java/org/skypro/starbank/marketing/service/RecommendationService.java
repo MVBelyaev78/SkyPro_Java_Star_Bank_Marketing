@@ -1,7 +1,7 @@
 package org.skypro.starbank.marketing.service;
 
 import org.skypro.starbank.marketing.auxiliary.NewCollection;
-import org.skypro.starbank.marketing.component.recommendation.RecommendationCollect;
+import org.skypro.starbank.marketing.component.recommendation.collect.RecommendationCollect;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
 import org.skypro.starbank.marketing.dto.recommendation.RecommendationServiceResult;
 import org.springframework.beans.factory.annotation.Autowired;
