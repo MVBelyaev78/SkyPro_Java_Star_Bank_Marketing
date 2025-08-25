@@ -14,12 +14,12 @@ import java.util.*;
 
 @Service
 public class RecommendationService {
-    private final Collection<RecommendationRule> rules;
+    private final Collection<RecommendationRule> fixedRecRules;
     private final DynamicRecommendationRules dynRecRules;
 
     @Autowired
-    public RecommendationService(Collection<RecommendationRule> rules, DynamicRecommendationRules dynRecRules) {
-        this.rules = rules;
+    public RecommendationService(Collection<RecommendationRule> fixedREcRules, DynamicRecommendationRules dynRecRules) {
+        this.fixedRecRules = fixedREcRules;
         this.dynRecRules = dynRecRules;
     }
 
@@ -29,14 +29,15 @@ public class RecommendationService {
 
     public RecommendationServiceResult getServiceResult(UUID userId) {
         final Collection<Recommendation> recommendations = new HashSet<>();
-        rules.forEach(recommendationRule -> recommendationRule.getRecommendation(userId)
+        fixedRecRules.forEach(fixedREcRule -> fixedREcRule
+                .getRecommendation(userId)
                 .ifPresent(recommendations::add));
         final DynamicRulesDatabase dynamicRulesDB = new DynamicRulesDatabaseEmulator();
         dynamicRulesDB.getRules()
                 .stream()
                 .filter(dynamicRule -> dynRecRules
-                        .getSingleRecommendation(userId, dynamicRule)
-                        .isPresent())
+                    .getSingleRecommendation(userId, dynamicRule)
+                    .isPresent())
                 .map(dynamicRule -> new Recommendation(
                     dynamicRule.getName(),
                     dynamicRule.getUuid(),
