@@ -22,7 +22,7 @@ public class DynamicRecommendationRules {
     public Optional<Recommendation> getSingleRecommendation(UUID userId, DynamicRule dynamicRule) {
         Optional<Recommendation> recommendation;
         SearchResult searchResult = dynamicRulesRepository.getUserCheckQuery(userId.toString());
-        dynamicRule.getRule()
+        dynamicRule.rule()
                 .stream()
                 .map(queryType -> searchMethodFactory.getSearchMethod(
                         queryType.query(),
@@ -32,9 +32,9 @@ public class DynamicRecommendationRules {
                 .forEach(sr -> searchResult.setResult(searchResult.getResult() && sr.getResult()));
         if (searchResult.getResult()) {
             recommendation = Optional.of(new Recommendation(
-                    dynamicRule.getName(),
-                    dynamicRule.getRecommendationUuid(),
-                    dynamicRule.getText()));
+                    dynamicRule.name(),
+                    dynamicRule.recommendationUuid(),
+                    dynamicRule.text()));
         } else {
             recommendation = Optional.empty();
         }

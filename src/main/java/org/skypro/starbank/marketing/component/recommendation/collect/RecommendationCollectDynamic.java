@@ -29,9 +29,9 @@ public class RecommendationCollectDynamic implements RecommendationCollect {
                         .getSingleRecommendation(userId, dynamicRule)
                         .isPresent())
                 .map(dynamicRule -> new Recommendation(
-                        dynamicRule.getName(),
-                        dynamicRule.getUuid(),
-                        dynamicRule.getText()))
+                        dynamicRule.name(),
+                        dynamicRule.uuid(),
+                        dynamicRule.text()))
                 .forEach(recommendations::add);
         return recommendations;
     }
