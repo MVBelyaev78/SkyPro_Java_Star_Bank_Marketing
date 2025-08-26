@@ -5,6 +5,8 @@ import org.skypro.starbank.marketing.repository.FixedRulesRepository;
 import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class RecRuleTopSaving extends RecommendationRuleImpl {
     public RecRuleTopSaving(FixedRulesRepository recommendationsRepository) {
@@ -20,7 +22,7 @@ public class RecRuleTopSaving extends RecommendationRuleImpl {
     protected Recommendation getNewRecommendation() {
         return new Recommendation(
                 "Top Saving",
-                "59efc529-2fff-41af-baff-90ccd7402925",
+                UUID.fromString("59efc529-2fff-41af-baff-90ccd7402925"),
                 "Откройте свою собственную «Копилку» с нашим банком!");
     }
 }

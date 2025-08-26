@@ -5,6 +5,8 @@ import org.skypro.starbank.marketing.repository.FixedRulesRepository;
 import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class RecRuleSimpleLoan extends RecommendationRuleImpl {
     public RecRuleSimpleLoan(FixedRulesRepository recommendationsRepository) {
@@ -20,7 +22,7 @@ public class RecRuleSimpleLoan extends RecommendationRuleImpl {
     protected Recommendation getNewRecommendation() {
         return new Recommendation(
                 "Простой кредит",
-                "ab138afb-f3ba-4a93-b74f-0fcee86d447f",
+                UUID.fromString("ab138afb-f3ba-4a93-b74f-0fcee86d447f"),
                 "Откройте мир выгодных кредитов с нами!");
     }
 }
