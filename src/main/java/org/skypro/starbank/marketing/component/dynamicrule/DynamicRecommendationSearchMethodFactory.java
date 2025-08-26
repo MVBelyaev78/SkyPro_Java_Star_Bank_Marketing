@@ -2,7 +2,6 @@ package org.skypro.starbank.marketing.component.dynamicrule;
 
 import jakarta.annotation.PostConstruct;
 import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -11,10 +10,13 @@ import java.util.Map;
 
 @Component
 public class DynamicRecommendationSearchMethodFactory {
-    @Autowired
-    private List<DynRecRuleSearchMethod> dynRecRuleSearchMethods;
+    private final List<DynRecRuleSearchMethod> dynRecRuleSearchMethods;
 
     private final Map<String, DynRecRuleSearchMethod> serviceCache = new HashMap<>();
+
+    public DynamicRecommendationSearchMethodFactory(List<DynRecRuleSearchMethod> dynRecRuleSearchMethods) {
+        this.dynRecRuleSearchMethods = dynRecRuleSearchMethods;
+    }
 
     @PostConstruct
     private void initServiceCache() {

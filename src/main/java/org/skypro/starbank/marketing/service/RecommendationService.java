@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
 import org.skypro.starbank.marketing.dto.recommendation.RecommendationServiceResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -15,7 +14,6 @@ import java.util.*;
 public class RecommendationService {
     private final Collection<RecommendationCollect> recommendationCollects;
 
-    @Autowired
     public RecommendationService(Collection<RecommendationCollect> recommendationCollects) {
         this.recommendationCollects = recommendationCollects;
     }
