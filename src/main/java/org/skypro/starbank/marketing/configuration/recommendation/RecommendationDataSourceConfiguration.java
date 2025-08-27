@@ -1,4 +1,4 @@
-package org.skypro.starbank.marketing.configuration;
+package org.skypro.starbank.marketing.configuration.recommendation;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.beans.factory.annotation.Qualifier;
