@@ -5,9 +5,9 @@ import org.skypro.starbank.marketing.dto.dynamicrule.QueryType;
 import org.skypro.starbank.marketing.mapper.ProductRowMapper;
 import org.skypro.starbank.marketing.mapper.RuleRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.util.Collection;
 import java.util.List;
@@ -26,22 +26,19 @@ public class DynamicRepositoryImpl implements DynamicRepository {
         String productSql = "INSERT INTO recommendation_products (id, product_id, product_name, product_text) VALUES (?, ?, ?, ?) returning id";
         UUID id = jdbcTemplatePostgres.queryForObject(productSql, UUID.class, UUID.randomUUID(), product.recommendationUuid(), product.name(), product.text());
 
-        for (QueryType rule : product.rule()) {
-            jdbcTemplatePostgres.update(connection -> {
-                String ruleSql = "INSERT INTO recommendation_rules (id, recommendation_id, query, arguments, negate) VALUES (?, ?, ?, ?, ?)";
-                PreparedStatement ps = connection.prepareStatement(ruleSql);
-
-                ps.setObject(1, UUID.randomUUID());
-                ps.setObject(2, id);
-                ps.setString(3, rule.query());
-
-                Array argumentsArray = connection.createArrayOf("text", rule.arguments().toArray());
-                ps.setArray(4, argumentsArray);
-
-                ps.setBoolean(5, rule.negate());
-                return ps;
-            });
-        }
+        String ruleSql = "INSERT INTO recommendation_rules (id, recommendation_id, query, arguments, negate) VALUES (?, ?, ?, ?, ?)";
+        product.rule()
+                .stream()
+                .<PreparedStatementCreator>map(rule -> connection -> {
+                    PreparedStatement ps = connection.prepareStatement(ruleSql);
+                    ps.setObject(1, UUID.randomUUID());
+                    ps.setObject(2, id);
+                    ps.setString(3, rule.query());
+                    ps.setArray(4, connection.createArrayOf("text", rule.arguments().toArray()));
+                    ps.setBoolean(5, rule.negate());
+                    return ps;
+                })
+                .forEach(jdbcTemplatePostgres::update);
 
         return new DynamicRule(
                 id,
