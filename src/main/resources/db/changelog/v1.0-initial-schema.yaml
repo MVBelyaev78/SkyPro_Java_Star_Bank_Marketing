@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: maxim
+      changes:
+        - createTable:
+            tableName: recommendation_products
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: product_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: UUID
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: product_text
+                  type: TEXT
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: recommendation_rules
+            columns:
+              - column:
+                  name: rule_id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: bigserial
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_rules_product_id
+                    references: recommendation_products(id)
+                    deleteCascade: true
+              - column:
+                  name: query
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: arguments
+                  type: TEXT[]
+                  constraints:
+                    nullable: false
+              - column:
+                  name: negate
+                  type: BOOLEAN
+                  defaultValue: false
+                  constraints:
+                    nullable: false

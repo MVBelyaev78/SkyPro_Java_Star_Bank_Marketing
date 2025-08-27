@@ -30,7 +30,7 @@ public class RecommendationCollectDynamic implements RecommendationCollect {
                         .isPresent())
                 .map(dynamicRule -> new Recommendation(
                         dynamicRule.name(),
-                        dynamicRule.uuid(),
+                        dynamicRule.recommendationUuid(),
                         dynamicRule.text()))
                 .forEach(recommendations::add);
         return recommendations;
