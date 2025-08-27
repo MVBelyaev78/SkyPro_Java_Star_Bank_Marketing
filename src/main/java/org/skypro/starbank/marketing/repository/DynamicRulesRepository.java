@@ -90,6 +90,7 @@ public class DynamicRulesRepository {
                 userId,
                 arguments.get(0).toUpperCase(Locale.ROOT));
     }
+
     public SearchResult getTransactionSumCompare(@Parameter(description = "UUID пользователя") String userId,
                                                  @Parameter(description = "Тип продукта [DEBIT/CREDIT/INVEST/SAVING]") List<String> arguments,
                                                  @Parameter(description = "Инвертировать результат") Boolean negate) {

@@ -5,6 +5,7 @@ import org.skypro.starbank.marketing.repository.DynamicRulesRepository;
 
 import java.util.List;
 
+
 public class DynamicRecRulTransactionSumCompare implements DynRecRuleSearchMethod {
     private final DynamicRulesRepository dynamicRulesRepository;
 
