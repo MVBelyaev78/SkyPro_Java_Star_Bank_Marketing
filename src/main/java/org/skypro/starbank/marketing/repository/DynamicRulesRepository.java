@@ -90,4 +90,51 @@ public class DynamicRulesRepository {
                 userId,
                 arguments.get(0).toUpperCase(Locale.ROOT));
     }
+    public SearchResult getTransactionSumCompare(@Parameter(description = "UUID пользователя") String userId,
+                                                 @Parameter(description = "Тип продукта [DEBIT/CREDIT/INVEST/SAVING]") List<String> arguments,
+                                                 @Parameter(description = "Инвертировать результат") Boolean negate) {
+        if (arguments == null || arguments.isEmpty() || arguments.size() != 4) {
+            throw new IllegalArgumentException("incorrect list of arguments");
+        }
+
+        String productType = arguments.get(0).toUpperCase(Locale.ROOT);
+        if (!productType.equals("DEBIT") && !productType.equals("CREDIT") &&
+                !productType.equals("INVEST") && !productType.equals("SAVING")) {
+            throw new IllegalArgumentException("incorrect product type");
+        }
+
+        String transactionType = arguments.get(1).toUpperCase(Locale.ROOT);
+        if (!transactionType.equals("WITHDRAW") && !transactionType.equals("DEPOSIT")) {
+            throw new IllegalArgumentException("incorrect transaction type");
+        }
+
+        String comparisonOperator = arguments.get(2);
+        if (!comparisonOperator.matches("[><=]+|>=|<=")) {
+            throw new IllegalArgumentException("incorrect comparison operator");
+        }
+
+        int comparisonValue;
+        try {
+            comparisonValue = Integer.parseInt(arguments.get(3));
+            if (comparisonValue < 0) {
+                throw new IllegalArgumentException("C must be a non-negative integer");
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("C must be a non-negative integer");
+        }
+
+        final String sql = String.format("""
+        SELECT SUM(transaction_amount) FROM transactions 
+        WHERE user_id = ? AND product_type = ? AND transaction_type = ? 
+        GROUP BY user_id HAVING SUM(transaction_amount) %s ?
+    """, comparisonOperator);
+
+        return jdbcTemplate.queryForObject(sql,
+                new SearchResultMapper(),
+                userId,
+                productType,
+                transactionType,
+                comparisonValue);
+    }
+
 }
