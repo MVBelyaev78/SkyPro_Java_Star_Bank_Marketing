@@ -58,7 +58,7 @@ public class DynamicRepository implements DynamicRulesDatabase {
         List<DynamicRule> products = jdbcTemplatePostgres.query(productSql, new ProductRowMapper());
 
         for (DynamicRule product : products) {
-            String rulesSql = "SELECT * FROM recommendation_rules WHERE product_id = ?";
+            String rulesSql = "SELECT * FROM recommendation_rules WHERE recommendation_id = ?";
             List<QueryType> rules = jdbcTemplatePostgres.query(
                     rulesSql,
                     new RuleRowMapper(),
