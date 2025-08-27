@@ -30,6 +30,9 @@ public class DynamicRulesRepository {
     public SearchResult getUserOfQuery(@Parameter(description = "UUID пользователя") String userId,
                                        @Parameter(description = "Тип продукта [DEBIT/CREDIT/INVEST/SAVING]") List<String> arguments,
                                        @Parameter(description = "Инвертировать результат") Boolean negate) {
+        if (userId == null || userId.isEmpty()) {
+            throw new IllegalArgumentException("User ID cannot be null or empty");
+        }
         if (arguments.isEmpty()) {
             throw new IllegalArgumentException("incorrect list of arguments");
         }
@@ -62,6 +65,9 @@ public class DynamicRulesRepository {
     public SearchResult getActiveUserOfQuery(@Parameter(description = "UUID пользователя") String userId,
                                              @Parameter(description = "Тип продукта [DEBIT/CREDIT/INVEST/SAVING]") List<String> arguments,
                                              @Parameter(description = "Инвертировать результат") Boolean negate) {
+        if (userId == null || userId.isEmpty()) {
+            throw new IllegalArgumentException("User ID cannot be null or empty");
+        }
         if (arguments.isEmpty()) {
             throw new IllegalArgumentException("incorrect list of arguments");
         }
@@ -93,12 +99,15 @@ public class DynamicRulesRepository {
 
     @Operation(summary = "Сравнение сумм всех транзакций",
             description = "Запрос сравнивает сумму всех транзакций одного типа по продуктам одного типа с некоторой константой")
-    public SearchResult getTransactionSumCompareOfQuery(@Parameter(description = "UUID пользователя") String userId,
-                                                        @Parameter(description = "Тип продукта [DEBIT/CREDIT/INVEST/SAVING]," +
+    public SearchResult getTransactionSumCompare(@Parameter(description = "UUID пользователя") String userId,
+                                                 @Parameter(description = "Тип продукта [DEBIT/CREDIT/INVEST/SAVING]," +
                                                                 "Тип транзакции [DEPOSIT/WITHDRAW]," +
                                                                 "Тип сравнения [</>/=/>=/<=]," +
                                                                 "Некоторая константа [неотрицательное целое число]") List<String> arguments,
-                                                        @Parameter(description = "Инвертировать результат") Boolean negate) {
+                                                 @Parameter(description = "Инвертировать результат") Boolean negate) {
+        if (userId == null || userId.isEmpty()) {
+            throw new IllegalArgumentException("User ID cannot be null or empty");
+        }
         if (arguments == null || arguments.size()<4) {
             throw new IllegalArgumentException("incorrect list of arguments. Expected 4 arguments");
         }
@@ -132,20 +141,55 @@ public class DynamicRulesRepository {
         }
 
         final String sql = String.format("""
-                select %s (
-                    select COALESCE(SUM(t.amount), 0) %s ?
-                    FROM TRANSACTIONS t
-                    JOIN PRODUCTS p ON p.id = t.product_id
-                    WHERE p.type = ?
-                    AND t.type = ?
-                    AND t.user_id = ?
-                ) AS result
+                SELECT %s coalesce(sum(t.AMOUNT), 0) %s ? "result"
+                  FROM PUBLIC.TRANSACTIONS t
+                  JOIN PUBLIC.PRODUCTS p ON p.ID = t.PRODUCT_ID
+                 WHERE t.USER_ID = ?
+                   AND p."TYPE" = ?
+                   AND t."TYPE" = ?;
                 """, negate ? "not" : "", operation);
         return jdbcTemplate.queryForObject(sql,
                 new SearchResultMapper(),
                 constanta,
+                userId,
                 productType,
-                transactionType,
-                userId);
+                transactionType);
+    }
+    public SearchResult getTransactionSumCompareDepositWithdraw(@Parameter(description = "UUID пользователя") String userId,
+                                                                @Parameter(description = "Тип продукта [DEBIT/CREDIT/INVEST/SAVING]") List<String> arguments,
+                                                                @Parameter(description = "Инвертировать результат") Boolean negate) {
+        if (userId == null || userId.isEmpty()) {
+            throw new IllegalArgumentException("User ID cannot be null or empty");
+        }
+        if (arguments == null || arguments.size() != 2) {
+            throw new IllegalArgumentException("incorrect list of arguments");
+        }
+
+        String productType = arguments.get(0).toUpperCase(Locale.ROOT);
+        if (!productType.equals("DEBIT") && !productType.equals("CREDIT") &&
+                !productType.equals("INVEST") && !productType.equals("SAVING")) {
+            throw new IllegalArgumentException("incorrect transaction type");
+        }
+
+        String comparisonOperator = arguments.get(1);
+        if (!comparisonOperator.matches("[><=]+|>=|<=")) {
+            throw new IllegalArgumentException("incorrect comparison operator");
+        }
+
+        final String sql = String.format("""
+                SELECT %s coalesce(sum(CASE t."TYPE" WHEN ? THEN t.amount ELSE 0 END), 0) %s
+                       coalesce(sum(CASE t."TYPE" WHEN ? THEN t.amount ELSE 0 END), 0) "result"
+                  FROM PUBLIC.TRANSACTIONS t
+                  JOIN PUBLIC.PRODUCTS p ON p.ID = t.PRODUCT_ID
+                 WHERE t.USER_ID = ?
+                   AND p."TYPE" = ?;
+                """, negate ? "not" : "", comparisonOperator);
+
+        return jdbcTemplate.queryForObject(sql,
+                new SearchResultMapper(),
+                "DEPOSIT",
+                "WITHDRAW",
+                userId,
+                productType);
     }
 }
