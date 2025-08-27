@@ -1,8 +1,8 @@
 package org.skypro.starbank.marketing.service;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.skypro.starbank.marketing.configuration.dynamicrule.DynamicRepository;
-import org.skypro.starbank.marketing.configuration.dynamicrule.DynamicRulesDatabase;
+import org.skypro.starbank.marketing.repository.DynamicRepository;
+import org.skypro.starbank.marketing.repository.DynamicRulesDatabase;
 import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
 import org.skypro.starbank.marketing.dto.dynamicrule.ListingRules;
 import org.springframework.stereotype.Service;
