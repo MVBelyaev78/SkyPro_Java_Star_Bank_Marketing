@@ -155,6 +155,9 @@ public class DynamicRulesRepository {
                 productType,
                 transactionType);
     }
+
+    @Operation(summary = "Сравнение суммы пополнений с тратами",
+            description = "Сравнение суммы пополнений с тратами по всем продуктам одного типа")
     public SearchResult getTransactionSumCompareDepositWithdraw(@Parameter(description = "UUID пользователя") String userId,
                                                                 @Parameter(description = "Тип продукта [DEBIT/CREDIT/INVEST/SAVING]") List<String> arguments,
                                                                 @Parameter(description = "Инвертировать результат") Boolean negate) {
