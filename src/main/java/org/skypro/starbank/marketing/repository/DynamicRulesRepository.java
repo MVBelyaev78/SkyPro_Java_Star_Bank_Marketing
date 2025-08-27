@@ -90,4 +90,62 @@ public class DynamicRulesRepository {
                 userId,
                 arguments.get(0).toUpperCase(Locale.ROOT));
     }
+
+    @Operation(summary = "Сравнение сумм всех транзакций",
+            description = "Запрос сравнивает сумму всех транзакций одного типа по продуктам одного типа с некоторой константой")
+    public SearchResult getTransactionSumCompareOfQuery(@Parameter(description = "UUID пользователя") String userId,
+                                                        @Parameter(description = "Тип продукта [DEBIT/CREDIT/INVEST/SAVING]," +
+                                                                "Тип транзакции [DEPOSIT/WITHDRAW]," +
+                                                                "Тип сравнения [</>/=/>=/<=]," +
+                                                                "Некоторая константа [неотрицательное целое число]") List<String> arguments,
+                                                        @Parameter(description = "Инвертировать результат") Boolean negate) {
+        if (arguments == null || arguments.size()<4) {
+            throw new IllegalArgumentException("incorrect list of arguments. Expected 4 arguments");
+        }
+
+        String productType = arguments.get(0).toUpperCase(Locale.ROOT);
+        if (!productType.equals("DEBIT") &&
+                !productType.equals("CREDIT") &&
+                !productType.equals("INVEST") &&
+                !productType.equals("SAVING")) {
+            throw new IllegalArgumentException("incorrect product type");
+        }
+
+        String transactionType = arguments.get(1).toUpperCase(Locale.ROOT);
+        if (!transactionType.equals("DEPOSIT") &&
+                !transactionType.equals("WITHDRAW")) {
+            throw new IllegalArgumentException("incorrect transaction type");
+        }
+
+        String operation = arguments.get(2).toUpperCase(Locale.ROOT);
+        if (!operation.equals("<") &&
+                !operation.equals(">") &&
+                !operation.equals("=") &&
+                !operation.equals(">=") &&
+                !operation.equals("<=")) {
+            throw new IllegalArgumentException("incorrect operation type");
+        }
+
+        int constanta = Integer.parseInt(arguments.get(3));
+        if (constanta < 0) {
+            throw new IllegalArgumentException("the number must be greater than or equals to 0");
+        }
+
+        final String sql = String.format("""
+                select %s (
+                    select COALESCE(SUM(t.amount), 0) %s ?
+                    FROM TRANSACTIONS t
+                    JOIN PRODUCTS p ON p.id = t.product_id
+                    WHERE p.type = ?
+                    AND t.type = ?
+                    AND t.user_id = ?
+                ) AS result
+                """, negate ? "not" : "", operation);
+        return jdbcTemplate.queryForObject(sql,
+                new SearchResultMapper(),
+                constanta,
+                productType,
+                transactionType,
+                userId);
+    }
 }
