@@ -8,8 +8,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
-import org.skypro.starbank.marketing.service.DynamicRuleService;
 import org.skypro.starbank.marketing.dto.dynamicrule.ListingRules;
+import org.skypro.starbank.marketing.service.DynamicRuleService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -52,8 +53,15 @@ public class DynamicRuleController {
             @ApiResponse(responseCode = "200", description = "Правило успешно удалено"),
             @ApiResponse(responseCode = "404", description = "Правило не найдено")
     })
-    public void deleteRule(@Parameter(description = "UUID правила для удаления", example = "a1b2c3d4-e5f6-7890-abcd-ef1234567890")
-                               @PathVariable String recommendationUuid) {
-        dynamicRuleService.deleteRule(UUID.fromString(recommendationUuid));
+    public ResponseEntity<Void> deleteRule(@Parameter(description = "UUID правила для удаления", example = "a1b2c3d4-e5f6-7890-abcd-ef1234567890")
+                                           @PathVariable String recommendationUuid) {
+        try {
+            UUID uuid = UUID.fromString(recommendationUuid);
+            dynamicRuleService.deleteRule(uuid);
+
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

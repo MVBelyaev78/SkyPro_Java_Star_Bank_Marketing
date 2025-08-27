@@ -7,6 +7,12 @@ databaseChangeLog:
             tableName: recommendation_products
             columns:
               - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
                   name: product_name
                   type: VARCHAR(255)
                   constraints:
@@ -15,7 +21,7 @@ databaseChangeLog:
                   name: product_id
                   type: UUID
                   constraints:
-                    primaryKey: true
+                    unique: true
                     nullable: false
               - column:
                   name: product_text
@@ -34,11 +40,11 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: product_id
-                  type: UUID
+                  type: bigserial
                   constraints:
                     nullable: false
                     foreignKeyName: fk_rules_product_id
-                    references: recommendation_products(product_id)
+                    references: recommendation_products(id)
                     deleteCascade: true
               - column:
                   name: query

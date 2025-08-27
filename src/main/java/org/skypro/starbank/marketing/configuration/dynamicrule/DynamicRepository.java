@@ -25,15 +25,15 @@ public class DynamicRepository implements DynamicRulesDatabase {
     public DynamicRule addRule(DynamicRule product) {
         UUID productId = UUID.randomUUID();
 
-        String productSql = "INSERT INTO recommendation_products (product_id, product_name, product_text) VALUES (?, ?, ?)";
-        jdbcTemplatePostgres.update(productSql, productId, product.name(), product.getText());
+        String productSql = "INSERT INTO recommendation_products (product_id, product_name, product_text) VALUES (?, ?, ?) RETURNING id";
+        Long id = jdbcTemplatePostgres.queryForObject(productSql, Long.class, productId, product.name(), product.text());
 
         for (QueryType rule : product.rule()) {
             jdbcTemplatePostgres.update(connection -> {
                 String ruleSql = "INSERT INTO recommendation_rules (product_id, query, arguments, negate) VALUES (?, ?, ?, ?)";
                 PreparedStatement ps = connection.prepareStatement(ruleSql);
 
-                ps.setObject(1, productId);
+                ps.setObject(1, id);
                 ps.setString(2, rule.query());
 
                 Array argumentsArray = connection.createArrayOf("text", rule.arguments().toArray());
@@ -43,7 +43,9 @@ public class DynamicRepository implements DynamicRulesDatabase {
                 return ps;
             });
         }
+
         return new DynamicRule(
+                id,
                 product.name(),
                 productId,
                 product.text(),
@@ -61,7 +63,7 @@ public class DynamicRepository implements DynamicRulesDatabase {
             List<QueryType> rules = jdbcTemplatePostgres.query(
                     rulesSql,
                     new RuleRowMapper(),
-                    product.recommendationUuid()
+                    product.id()
             );
             product.rule().addAll(rules);
         }
