@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigserial
+                  type: UUID
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -21,7 +21,6 @@ databaseChangeLog:
                   name: product_id
                   type: UUID
                   constraints:
-                    unique: true
                     nullable: false
               - column:
                   name: product_text
@@ -33,17 +32,17 @@ databaseChangeLog:
             tableName: recommendation_rules
             columns:
               - column:
-                  name: rule_id
-                  type: bigserial
+                  name: id
+                  type: UUID
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: product_id
-                  type: bigserial
+                  name: recommendation_id
+                  type: UUID
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_rules_product_id
+                    foreignKeyName: fk_rules_recommendation_id
                     references: recommendation_products(id)
                     deleteCascade: true
               - column:

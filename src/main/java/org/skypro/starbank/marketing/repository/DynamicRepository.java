@@ -23,23 +23,22 @@ public class DynamicRepository implements DynamicRulesDatabase {
 
     @Override
     public DynamicRule addRule(DynamicRule product) {
-        UUID productId = UUID.randomUUID();
-
-        String productSql = "INSERT INTO recommendation_products (product_id, product_name, product_text) VALUES (?, ?, ?) RETURNING id";
-        Long id = jdbcTemplatePostgres.queryForObject(productSql, Long.class, productId, product.name(), product.text());
+        String productSql = "INSERT INTO recommendation_products (id, product_id, product_name, product_text) VALUES (?, ?, ?, ?) returning id";
+        UUID id = jdbcTemplatePostgres.queryForObject(productSql, UUID.class, UUID.randomUUID(), product.recommendationUuid(), product.name(), product.text());
 
         for (QueryType rule : product.rule()) {
             jdbcTemplatePostgres.update(connection -> {
-                String ruleSql = "INSERT INTO recommendation_rules (product_id, query, arguments, negate) VALUES (?, ?, ?, ?)";
+                String ruleSql = "INSERT INTO recommendation_rules (id, recommendation_id, query, arguments, negate) VALUES (?, ?, ?, ?, ?)";
                 PreparedStatement ps = connection.prepareStatement(ruleSql);
 
-                ps.setObject(1, id);
-                ps.setString(2, rule.query());
+                ps.setObject(1, UUID.randomUUID());
+                ps.setObject(2, id);
+                ps.setString(3, rule.query());
 
                 Array argumentsArray = connection.createArrayOf("text", rule.arguments().toArray());
-                ps.setArray(3, argumentsArray);
+                ps.setArray(4, argumentsArray);
 
-                ps.setBoolean(4, rule.negate());
+                ps.setBoolean(5, rule.negate());
                 return ps;
             });
         }
@@ -47,7 +46,7 @@ public class DynamicRepository implements DynamicRulesDatabase {
         return new DynamicRule(
                 id,
                 product.name(),
-                productId,
+                product.recommendationUuid(),
                 product.text(),
                 product.rule()
         );

@@ -13,7 +13,7 @@ public class ProductRowMapper  implements RowMapper<DynamicRule> {
     @Override
     public DynamicRule mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new DynamicRule(
-                rs.getLong("id"),
+                UUID.fromString(rs.getString("id")),
                 rs.getString("product_name"),
                 UUID.fromString(rs.getString("product_id")),
                 rs.getString("product_text"),
