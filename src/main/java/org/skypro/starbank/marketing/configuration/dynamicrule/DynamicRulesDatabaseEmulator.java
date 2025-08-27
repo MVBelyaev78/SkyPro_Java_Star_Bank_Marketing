@@ -26,10 +26,10 @@ public class DynamicRulesDatabaseEmulator implements DynamicRulesDatabase {
     public DynamicRule addRule(DynamicRule ruleSource) {
         DynamicRule result = new DynamicRule(
                 UUID.randomUUID(),
-                ruleSource.getName(),
-                ruleSource.getRecommendationUuid(),
-                ruleSource.getText(),
-                ruleSource.getRule());
+                ruleSource.name(),
+                ruleSource.recommendationUuid(),
+                ruleSource.text(),
+                ruleSource.rule());
         rules.add(result);
         return result;
     }
@@ -41,6 +41,6 @@ public class DynamicRulesDatabaseEmulator implements DynamicRulesDatabase {
 
     @Override
     public void deleteRule(UUID recommendationUuid) {
-        rules.removeIf(rule -> rule.getRecommendationUuid().equals(recommendationUuid));
+        rules.removeIf(rule -> rule.recommendationUuid().equals(recommendationUuid));
     }
 }
