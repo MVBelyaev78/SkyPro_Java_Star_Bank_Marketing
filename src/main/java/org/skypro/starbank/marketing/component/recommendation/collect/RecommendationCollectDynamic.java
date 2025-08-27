@@ -2,7 +2,7 @@ package org.skypro.starbank.marketing.component.recommendation.collect;
 
 import org.skypro.starbank.marketing.auxiliary.NewCollection;
 import org.skypro.starbank.marketing.component.dynamicrule.DynamicRecommendationRules;
-import org.skypro.starbank.marketing.repository.DynamicRulesDatabase;
+import org.skypro.starbank.marketing.repository.DynamicRepository;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +12,9 @@ import java.util.UUID;
 @Component
 public class RecommendationCollectDynamic implements RecommendationCollect {
     private final DynamicRecommendationRules dynRecRules;
-    private final DynamicRulesDatabase dynamicRulesDatabase;
+    private final DynamicRepository dynamicRulesDatabase;
 
-    public RecommendationCollectDynamic(DynamicRecommendationRules dynRecRules, DynamicRulesDatabase dynamicRulesDatabase) {
+    public RecommendationCollectDynamic(DynamicRecommendationRules dynRecRules, DynamicRepository dynamicRulesDatabase) {
         this.dynRecRules = dynRecRules;
         this.dynamicRulesDatabase = dynamicRulesDatabase;
     }
