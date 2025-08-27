@@ -164,6 +164,7 @@ public class DynamicRulesRepository {
         if (userId == null || userId.isEmpty()) {
             throw new IllegalArgumentException("User ID cannot be null or empty");
         }
+
         if (arguments == null || arguments.size() != 2) {
             throw new IllegalArgumentException("incorrect list of arguments");
         }
