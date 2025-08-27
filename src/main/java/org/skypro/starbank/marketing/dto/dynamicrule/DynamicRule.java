@@ -8,10 +8,10 @@ import java.util.UUID;
 
 @Schema(description = "Динамическое правило для генерации рекомендаций")
 public record DynamicRule(UUID uuid,
-                          @Schema(description = "Название финансового продукта", example = "Ипотека 'Молодая семья'", requiredMode = Schema.RequiredMode.REQUIRED) String name,
-                          @Schema(description = "UUID рекомендуемого продукта", example = "f56b9e7e-eb9a-4f27-9c3a-910a2bb8f7f1", requiredMode = Schema.RequiredMode.REQUIRED) UUID recommendationUuid,
-                          @Schema(description = "Описание продукта", example = "Специальная программа ипотечного кредитования для молодых семей.") String text,
-                          @Schema(description = "Список условий правила", requiredMode = Schema.RequiredMode.REQUIRED) Collection<QueryType> rule) {
+      @Schema(description = "Название финансового продукта", example = "Ипотека 'Молодая семья'", requiredMode = Schema.RequiredMode.REQUIRED) String name,
+      @Schema(description = "UUID рекомендуемого продукта", example = "f56b9e7e-eb9a-4f27-9c3a-910a2bb8f7f1", requiredMode = Schema.RequiredMode.REQUIRED) UUID recommendationUuid,
+      @Schema(description = "Описание продукта", example = "Специальная программа ипотечного кредитования для молодых семей.") String text,
+      @Schema(description = "Список условий правила", requiredMode = Schema.RequiredMode.REQUIRED) Collection<QueryType> rule) {
     public DynamicRule(UUID uuid, String name, UUID recommendationUuid, String text, Collection<QueryType> rule) {
         this.uuid = uuid;
         this.name = name;
