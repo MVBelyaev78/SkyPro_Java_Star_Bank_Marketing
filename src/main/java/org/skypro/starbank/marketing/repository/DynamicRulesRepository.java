@@ -34,16 +34,16 @@ public class DynamicRulesRepository {
             throw new IllegalArgumentException("User ID cannot be null or empty");
         }
         if (arguments.isEmpty()) {
-            throw new IllegalArgumentException("incorrect list of arguments");
+            throw new IllegalArgumentException("List of arguments is empty");
         }
         if (arguments.size() > 1) {
-            throw new IllegalArgumentException("incorrect list of arguments");
+            throw new IllegalArgumentException("incorrect list of arguments. Expected 1 argument");
         }
         if (!arguments.get(0).toUpperCase(Locale.ROOT).equals("DEBIT") &&
                 !arguments.get(0).toUpperCase(Locale.ROOT).equals("CREDIT") &&
                 !arguments.get(0).toUpperCase(Locale.ROOT).equals("INVEST") &&
                 !arguments.get(0).toUpperCase(Locale.ROOT).equals("SAVING")) {
-            throw new IllegalArgumentException("incorrect list of arguments");
+            throw new IllegalArgumentException("incorrect product type");
         }
         final String sql = String.format("""
                 select %s exists (
@@ -68,18 +68,22 @@ public class DynamicRulesRepository {
         if (userId == null || userId.isEmpty()) {
             throw new IllegalArgumentException("User ID cannot be null or empty");
         }
+
         if (arguments.isEmpty()) {
-            throw new IllegalArgumentException("incorrect list of arguments");
+            throw new IllegalArgumentException("List of arguments is empty");
         }
+
         if (arguments.size() > 1) {
-            throw new IllegalArgumentException("incorrect list of arguments");
+            throw new IllegalArgumentException("incorrect list of arguments. Expected 1 argument");
         }
+
         if (!arguments.get(0).toUpperCase(Locale.ROOT).equals("DEBIT") &&
                 !arguments.get(0).toUpperCase(Locale.ROOT).equals("CREDIT") &&
                 !arguments.get(0).toUpperCase(Locale.ROOT).equals("INVEST") &&
                 !arguments.get(0).toUpperCase(Locale.ROOT).equals("SAVING")) {
-            throw new IllegalArgumentException("incorrect list of arguments");
+            throw new IllegalArgumentException("incorrect product type");
         }
+
         final Integer minTransactions = 5;
         final String sql = String.format("""
                 select %s ? <= (
@@ -90,6 +94,7 @@ public class DynamicRulesRepository {
                        and p."TYPE" = ?
                 ) AS result
                 """, negate ? "not" : "");
+
         return jdbcTemplate.queryForObject(sql,
                 new SearchResultMapper(),
                 minTransactions,
@@ -108,7 +113,12 @@ public class DynamicRulesRepository {
         if (userId == null || userId.isEmpty()) {
             throw new IllegalArgumentException("User ID cannot be null or empty");
         }
-        if (arguments == null || arguments.size()<4) {
+
+        if (arguments.isEmpty()) {
+            throw new IllegalArgumentException("List of arguments is empty");
+        }
+
+        if (arguments.size() < 4) {
             throw new IllegalArgumentException("incorrect list of arguments. Expected 4 arguments");
         }
 
@@ -126,13 +136,9 @@ public class DynamicRulesRepository {
             throw new IllegalArgumentException("incorrect transaction type");
         }
 
-        String operation = arguments.get(2).toUpperCase(Locale.ROOT);
-        if (!operation.equals("<") &&
-                !operation.equals(">") &&
-                !operation.equals("=") &&
-                !operation.equals(">=") &&
-                !operation.equals("<=")) {
-            throw new IllegalArgumentException("incorrect operation type");
+        String comparisonOperator = arguments.get(2).toUpperCase(Locale.ROOT);
+        if (!comparisonOperator.matches("[><=]+|>=|<=")) {
+            throw new IllegalArgumentException("incorrect comparison operator");
         }
 
         int constanta = Integer.parseInt(arguments.get(3));
@@ -147,7 +153,8 @@ public class DynamicRulesRepository {
                  WHERE t.USER_ID = ?
                    AND p."TYPE" = ?
                    AND t."TYPE" = ?;
-                """, negate ? "not" : "", operation);
+                """, negate ? "not" : "", comparisonOperator);
+
         return jdbcTemplate.queryForObject(sql,
                 new SearchResultMapper(),
                 constanta,
@@ -165,17 +172,23 @@ public class DynamicRulesRepository {
             throw new IllegalArgumentException("User ID cannot be null or empty");
         }
 
-        if (arguments == null || arguments.size() != 2) {
-            throw new IllegalArgumentException("incorrect list of arguments");
+        if (arguments.isEmpty()) {
+            throw new IllegalArgumentException("List of arguments is empty");
+        }
+
+        if (arguments.size() != 2) {
+            throw new IllegalArgumentException("incorrect list of arguments. Expected 2 arguments");
         }
 
         String productType = arguments.get(0).toUpperCase(Locale.ROOT);
+
         if (!productType.equals("DEBIT") && !productType.equals("CREDIT") &&
                 !productType.equals("INVEST") && !productType.equals("SAVING")) {
-            throw new IllegalArgumentException("incorrect transaction type");
+            throw new IllegalArgumentException("incorrect product type");
         }
 
         String comparisonOperator = arguments.get(1);
+
         if (!comparisonOperator.matches("[><=]+|>=|<=")) {
             throw new IllegalArgumentException("incorrect comparison operator");
         }
