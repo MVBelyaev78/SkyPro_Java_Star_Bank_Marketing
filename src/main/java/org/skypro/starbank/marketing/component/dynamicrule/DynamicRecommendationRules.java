@@ -1,14 +1,11 @@
 package org.skypro.starbank.marketing.component.dynamicrule;
 
 import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
-import org.skypro.starbank.marketing.dto.dynamicrule.QueryType;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
-import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.skypro.starbank.marketing.repository.DynamicRulesRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class DynamicRecommendationRules {
@@ -21,22 +18,17 @@ public class DynamicRecommendationRules {
     }
 
     public Optional<Recommendation> getSingleRecommendation(UUID userId, DynamicRule dynamicRule) {
+        if (!dynamicRulesRepository.getUserCheckQuery(userId.toString()).getResult()) {
+            return Optional.empty();
+        }
+        Set<Boolean> total = new HashSet<>();
         Optional<Recommendation> recommendation;
-        SearchResult searchResult = dynamicRulesRepository.getUserCheckQuery(userId.toString());
-        dynamicRule.rule()
-                .stream()
-                .map(queryType -> searchMethodFactory.getSearchMethod(
-                    queryType.query(),
-                    userId.toString(),
-                    queryType.arguments(),
-                    queryType.negate()))
-                .forEach(sr -> {
-                    if (sr.isEmpty()) {
-                        throw new IllegalArgumentException("Error in a set of rules");
-                    }
-                    searchResult.setResult(searchResult.getResult() && sr.get().getResult());
-                });
-        if (searchResult.getResult()) {
+        dynamicRule.rule().forEach(queryType -> searchMethodFactory.getSearchMethod(
+                queryType.query(),
+                userId.toString(),
+                queryType.arguments(),
+                queryType.negate()).ifPresent(searchResult -> total.add(searchResult.getResult())));
+        if (!total.isEmpty() && !total.contains(false)) {
             recommendation = Optional.of(new Recommendation(
                     dynamicRule.name(),
                     dynamicRule.recommendationUuid(),

@@ -8,9 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Component
 public class DynamicRecommendationSearchMethodFactory {
+    private static final Logger log = Logger.getLogger(DynamicRecommendationSearchMethodFactory.class.getName());
+
     private final List<DynRecRuleSearchMethod> dynRecRuleSearchMethods;
 
     private final Map<String, DynRecRuleSearchMethod> serviceCache = new HashMap<>();
@@ -30,6 +34,7 @@ public class DynamicRecommendationSearchMethodFactory {
         if (serviceCache.containsKey(query)) {
             searchResult = Optional.of(serviceCache.get(query).getSearchMethod(userId, arguments, negate));
         } else {
+            log.log(Level.WARNING, String.format("query type %s is not supported", query));
             searchResult = Optional.empty();
         }
         return searchResult;
