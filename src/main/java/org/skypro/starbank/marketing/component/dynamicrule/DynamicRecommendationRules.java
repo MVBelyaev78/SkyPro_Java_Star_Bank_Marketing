@@ -22,20 +22,16 @@ public class DynamicRecommendationRules {
             return Optional.empty();
         }
         Set<Boolean> total = new HashSet<>();
-        Optional<Recommendation> recommendation;
-        dynamicRule.rule().forEach(queryType -> searchMethodFactory.getSearchMethod(
-                queryType.query(),
-                userId.toString(),
-                queryType.arguments(),
-                queryType.negate()).ifPresent(searchResult -> total.add(searchResult.getResult())));
-        if (!total.isEmpty() && !total.contains(false)) {
-            recommendation = Optional.of(new Recommendation(
-                    dynamicRule.name(),
-                    dynamicRule.recommendationUuid(),
-                    dynamicRule.text()));
-        } else {
-            recommendation = Optional.empty();
+        dynamicRule.rule()
+                .forEach(queryType -> searchMethodFactory
+                        .getSearchMethod(queryType, userId)
+                        .ifPresent(searchResult -> total.add(searchResult.getResult())));
+        if (total.isEmpty() || total.contains(false)) {
+            return Optional.empty();
         }
-        return recommendation;
+        return Optional.of(new Recommendation(
+                dynamicRule.name(),
+                dynamicRule.recommendationUuid(),
+                dynamicRule.text()));
     }
 }

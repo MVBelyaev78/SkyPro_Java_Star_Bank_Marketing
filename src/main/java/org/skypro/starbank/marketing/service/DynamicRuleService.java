@@ -1,7 +1,6 @@
 package org.skypro.starbank.marketing.service;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.skypro.starbank.marketing.repository.DynamicRepositoryImpl;
 import org.skypro.starbank.marketing.repository.DynamicRepository;
 import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
 import org.skypro.starbank.marketing.dto.dynamicrule.ListingRules;
@@ -11,11 +10,9 @@ import java.util.UUID;
 
 @Service
 public class DynamicRuleService {
-    private final DynamicRepository databaseRules;
-    private final DynamicRepositoryImpl repo;
+    private final DynamicRepository repo;
 
-    public DynamicRuleService(DynamicRepository databaseRules, DynamicRepositoryImpl repo) {
-        this.databaseRules = databaseRules;
+    public DynamicRuleService(DynamicRepository repo) {
         this.repo = repo;
     }
 

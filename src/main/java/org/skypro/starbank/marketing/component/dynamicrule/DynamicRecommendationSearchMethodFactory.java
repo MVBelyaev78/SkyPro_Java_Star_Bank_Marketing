@@ -1,13 +1,11 @@
 package org.skypro.starbank.marketing.component.dynamicrule;
 
 import jakarta.annotation.PostConstruct;
+import org.skypro.starbank.marketing.dto.dynamicrule.QueryType;
 import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,12 +27,15 @@ public class DynamicRecommendationSearchMethodFactory {
                 .forEach(searchMethod -> serviceCache.put(searchMethod.getQuery(), searchMethod));
     }
 
-    public Optional<SearchResult> getSearchMethod(String query, String userId, List<String> arguments, Boolean negate) {
+    public Optional<SearchResult> getSearchMethod(QueryType queryType, UUID userId) {
         Optional<SearchResult> searchResult;
-        if (serviceCache.containsKey(query)) {
-            searchResult = Optional.of(serviceCache.get(query).getSearchMethod(userId, arguments, negate));
+        if (serviceCache.containsKey(queryType.query())) {
+            searchResult = Optional.of(
+                    serviceCache
+                            .get(queryType.query())
+                            .getSearchMethod(userId.toString(), queryType.arguments(), queryType.negate()));
         } else {
-            log.log(Level.WARNING, String.format("query type %s is not supported", query));
+            log.log(Level.WARNING, String.format("query type %s is not supported", queryType.query()));
             searchResult = Optional.empty();
         }
         return searchResult;

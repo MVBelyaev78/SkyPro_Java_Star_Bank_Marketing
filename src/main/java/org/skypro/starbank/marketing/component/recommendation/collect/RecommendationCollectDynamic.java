@@ -11,28 +11,22 @@ import java.util.UUID;
 
 @Component
 public class RecommendationCollectDynamic implements RecommendationCollect {
-    private final DynamicRecommendationRules dynRecRules;
-    private final DynamicRepository dynamicRulesDatabase;
+    private final DynamicRecommendationRules dynamicRecommendationRules;
+    private final DynamicRepository dynamicRepository;
 
     public RecommendationCollectDynamic(DynamicRecommendationRules dynRecRules, DynamicRepository dynamicRulesDatabase) {
-        this.dynRecRules = dynRecRules;
-        this.dynamicRulesDatabase = dynamicRulesDatabase;
+        this.dynamicRecommendationRules = dynRecRules;
+        this.dynamicRepository = dynamicRulesDatabase;
     }
 
     @Override
     public Collection<Recommendation> getRecommendations(UUID userId) {
         final Collection<Recommendation> recommendations = new NewCollection<Recommendation>().initCollection();
-        dynamicRulesDatabase
+        dynamicRepository
                 .getRules()
-                .stream()
-                .filter(dynamicRule -> dynRecRules
-                        .getSingleRecommendation(userId, dynamicRule)
-                        .isPresent())
-                .map(dynamicRule -> new Recommendation(
-                        dynamicRule.name(),
-                        dynamicRule.recommendationUuid(),
-                        dynamicRule.text()))
-                .forEach(recommendations::add);
+                .forEach(dynamicRule -> dynamicRecommendationRules
+                    .getSingleRecommendation(userId, dynamicRule)
+                    .ifPresent(recommendations::add));
         return recommendations;
     }
 }
