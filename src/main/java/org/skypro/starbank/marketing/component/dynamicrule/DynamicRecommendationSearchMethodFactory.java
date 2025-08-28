@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class DynamicRecommendationSearchMethodFactory {
@@ -24,7 +25,13 @@ public class DynamicRecommendationSearchMethodFactory {
                 .forEach(searchMethod -> serviceCache.put(searchMethod.getQuery(), searchMethod));
     }
 
-    public SearchResult getSearchMethod(String query, String userId, List<String> arguments, Boolean negate) {
-        return serviceCache.get(query).getSearchMethod(userId, arguments, negate);
+    public Optional<SearchResult> getSearchMethod(String query, String userId, List<String> arguments, Boolean negate) {
+        Optional<SearchResult> searchResult;
+        if (serviceCache.containsKey(query)) {
+            searchResult = Optional.of(serviceCache.get(query).getSearchMethod(userId, arguments, negate));
+        } else {
+            searchResult = Optional.empty();
+        }
+        return searchResult;
     }
 }

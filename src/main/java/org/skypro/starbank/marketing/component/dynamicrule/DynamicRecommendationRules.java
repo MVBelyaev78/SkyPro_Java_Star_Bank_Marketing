@@ -1,6 +1,7 @@
 package org.skypro.starbank.marketing.component.dynamicrule;
 
 import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
+import org.skypro.starbank.marketing.dto.dynamicrule.QueryType;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
 import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.skypro.starbank.marketing.repository.DynamicRulesRepository;
@@ -25,11 +26,16 @@ public class DynamicRecommendationRules {
         dynamicRule.rule()
                 .stream()
                 .map(queryType -> searchMethodFactory.getSearchMethod(
-                        queryType.query(),
-                        userId.toString(),
-                        queryType.arguments(),
-                        queryType.negate()))
-                .forEach(sr -> searchResult.setResult(searchResult.getResult() && sr.getResult()));
+                    queryType.query(),
+                    userId.toString(),
+                    queryType.arguments(),
+                    queryType.negate()))
+                .forEach(sr -> {
+                    if (sr.isEmpty()) {
+                        throw new IllegalArgumentException("Error in a set of rules");
+                    }
+                    searchResult.setResult(searchResult.getResult() && sr.get().getResult());
+                });
         if (searchResult.getResult()) {
             recommendation = Optional.of(new Recommendation(
                     dynamicRule.name(),
