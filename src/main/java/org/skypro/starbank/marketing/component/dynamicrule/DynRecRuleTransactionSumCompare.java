@@ -5,8 +5,6 @@ import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.skypro.starbank.marketing.repository.DynamicRulesRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class DynRecRuleTransactionSumCompare implements DynRecRuleSearchMethod {
     private final DynamicRulesRepository dynamicRulesRepository;
