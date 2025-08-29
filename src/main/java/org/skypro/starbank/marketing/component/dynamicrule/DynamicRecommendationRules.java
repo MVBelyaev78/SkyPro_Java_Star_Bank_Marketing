@@ -18,14 +18,14 @@ public class DynamicRecommendationRules {
     }
 
     public Optional<Recommendation> getSingleRecommendation(UUID userId, DynamicRule dynamicRule) {
-        if (!dynamicRulesRepository.getUserCheckQuery(userId.toString()).getResult()) {
+        if (!dynamicRulesRepository.getUserCheckQuery(userId.toString()).result()) {
             return Optional.empty();
         }
         Set<Boolean> total = new HashSet<>();
         dynamicRule.rule()
                 .forEach(queryType -> searchMethodFactory
                         .getSearchMethod(queryType, userId)
-                        .ifPresent(searchResult -> total.add(searchResult.getResult())));
+                        .ifPresent(searchResult -> total.add(searchResult.result())));
         if (total.isEmpty() || total.contains(false)) {
             return Optional.empty();
         }
