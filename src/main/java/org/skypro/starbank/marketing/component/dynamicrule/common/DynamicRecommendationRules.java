@@ -1,4 +1,4 @@
-package org.skypro.starbank.marketing.component.dynamicrule;
+package org.skypro.starbank.marketing.component.dynamicrule.common;
 
 import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;

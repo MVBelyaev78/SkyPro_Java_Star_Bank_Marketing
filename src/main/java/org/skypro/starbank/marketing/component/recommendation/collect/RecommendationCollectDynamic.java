@@ -1,7 +1,7 @@
 package org.skypro.starbank.marketing.component.recommendation.collect;
 
 import org.skypro.starbank.marketing.auxiliary.NewCollection;
-import org.skypro.starbank.marketing.component.dynamicrule.DynamicRecommendationRules;
+import org.skypro.starbank.marketing.component.dynamicrule.common.DynamicRecommendationRules;
 import org.skypro.starbank.marketing.repository.DynamicRepository;
 import org.skypro.starbank.marketing.dto.recommendation.Recommendation;
 import org.springframework.stereotype.Component;
