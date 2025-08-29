@@ -2,8 +2,11 @@ package org.skypro.starbank.marketing.repository;
 
 import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
 import org.skypro.starbank.marketing.dto.dynamicrule.QueryType;
+import org.skypro.starbank.marketing.dto.dynamicrule.RuleStatInfo;
+import org.skypro.starbank.marketing.dto.dynamicrule.RuleStatInfoAll;
 import org.skypro.starbank.marketing.mapper.ProductRowMapper;
 import org.skypro.starbank.marketing.mapper.RuleRowMapper;
+import org.skypro.starbank.marketing.mapper.RuleStatRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.stereotype.Repository;
@@ -71,5 +74,28 @@ public class DynamicRepositoryImpl implements DynamicRepository {
     public void deleteRule(UUID recommendationUuid) {
         String sql = "DELETE FROM recommendation_products WHERE product_id = ?";
         jdbcTemplatePostgres.update(sql, recommendationUuid);
+    }
+
+    @Override
+    public void addRuleStat(UUID dynamicRuleUuid) {
+        final String sql = "INSERT INTO recommendation_products_stat(id, recommendation_id) VALUES (?, ?))";
+        jdbcTemplatePostgres.update(sql, UUID.randomUUID(), dynamicRuleUuid);
+    }
+
+    @Override
+    public RuleStatInfoAll getRulesStat() {
+        final String sql = """
+                SELECT t.recommendation_id, COUNT(1) cnt
+                  FROM recommendation_products_stat t
+                 WHERE t.recommendation_id = ?
+                 GROUP BY recommendation_id
+                """;
+        return new RuleStatInfoAll(jdbcTemplatePostgres.query(sql, new RuleStatRowMapper()));
+    }
+
+    @Override
+    public void deleteRuleStatAll(UUID dynamicRuleUuid) {
+        final String sql = "DELETE FROM recommendation_products_stat t WHERE t.recommendation_id = ?";
+        jdbcTemplatePostgres.update(sql, dynamicRuleUuid);
     }
 }

@@ -61,3 +61,27 @@ databaseChangeLog:
                   defaultValue: false
                   constraints:
                     nullable: false
+
+        - createTable:
+            tableName: recommendation_products_stat
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: recommendation_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_rules_recommendation_id
+                    references: recommendation_products(id)
+                    deleteCascade: true
+              - column:
+                  name: activation_date
+                  type: TIMESTAMPTZ
+                  defaultValue: "now()"
+                  constraints:
+                    nullable: false
