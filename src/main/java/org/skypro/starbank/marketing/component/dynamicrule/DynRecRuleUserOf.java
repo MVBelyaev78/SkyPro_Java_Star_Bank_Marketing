@@ -1,10 +1,9 @@
 package org.skypro.starbank.marketing.component.dynamicrule;
 
+import org.skypro.starbank.marketing.dto.dynamicrule.SearchParameters;
 import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.skypro.starbank.marketing.repository.DynamicRulesRepository;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class DynRecRuleUserOf implements DynRecRuleSearchMethod {
@@ -20,7 +19,7 @@ public class DynRecRuleUserOf implements DynRecRuleSearchMethod {
     }
 
     @Override
-    public SearchResult getSearchMethod(String userId, List<String> arguments, Boolean negate) {
-        return dynamicRulesRepository.getUserOfQuery(userId, arguments, negate);
+    public SearchResult getSearchMethod(SearchParameters searchParameters) {
+        return dynamicRulesRepository.getUserOfQuery(searchParameters);
     }
 }

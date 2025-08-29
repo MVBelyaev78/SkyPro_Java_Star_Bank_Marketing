@@ -2,6 +2,7 @@ package org.skypro.starbank.marketing.component.dynamicrule;
 
 import jakarta.annotation.PostConstruct;
 import org.skypro.starbank.marketing.dto.dynamicrule.QueryType;
+import org.skypro.starbank.marketing.dto.dynamicrule.SearchParameters;
 import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +34,7 @@ public class DynamicRecommendationSearchMethodFactory {
             searchResult = Optional.of(
                     serviceCache
                             .get(queryType.query())
-                            .getSearchMethod(userId.toString(), queryType.arguments(), queryType.negate()));
+                            .getSearchMethod(new SearchParameters(userId.toString(), queryType.arguments(), queryType.negate())));
         } else {
             log.log(Level.WARNING, String.format("query type %s is not supported", queryType.query()));
             searchResult = Optional.empty();
