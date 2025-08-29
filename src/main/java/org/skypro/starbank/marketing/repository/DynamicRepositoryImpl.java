@@ -2,7 +2,6 @@ package org.skypro.starbank.marketing.repository;
 
 import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
 import org.skypro.starbank.marketing.dto.dynamicrule.QueryType;
-import org.skypro.starbank.marketing.dto.dynamicrule.RuleStatInfo;
 import org.skypro.starbank.marketing.dto.dynamicrule.RuleStatInfoAll;
 import org.skypro.starbank.marketing.mapper.ProductRowMapper;
 import org.skypro.starbank.marketing.mapper.RuleRowMapper;
