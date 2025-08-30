@@ -51,7 +51,7 @@ public class DynamicRuleController {
     @Operation(summary = "Удалить правило по ID",
             description = "Удаляет правило генерации рекомендаций по его уникальному идентификатору.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Правило успешно удалено"),
+            @ApiResponse(responseCode = "204", description = "Правило успешно удалено"),
             @ApiResponse(responseCode = "404", description = "Правило не найдено")
     })
     public ResponseEntity<Void> deleteRule(@Parameter(description = "UUID правила для удаления", example = "a1b2c3d4-e5f6-7890-abcd-ef1234567890")
