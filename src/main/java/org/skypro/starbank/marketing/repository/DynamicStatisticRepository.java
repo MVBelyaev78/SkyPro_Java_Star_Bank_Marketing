@@ -8,6 +8,4 @@ public interface DynamicStatisticRepository {
     void addRuleStat(UUID dynamicRuleUuid);
 
     RuleStatInfoAll getRulesStat();
-
-    void deleteRuleStatAll(UUID dynamicRuleUuid);
 }

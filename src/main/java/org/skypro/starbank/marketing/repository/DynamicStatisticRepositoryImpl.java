@@ -30,10 +30,4 @@ public class DynamicStatisticRepositoryImpl implements DynamicStatisticRepositor
                 """;
         return new RuleStatInfoAll(jdbcTemplatePostgres.query(sql, new RuleStatRowMapper()));
     }
-
-    @Override
-    public void deleteRuleStatAll(UUID dynamicRuleUuid) {
-        final String sql = "DELETE FROM recommendation_products_stat t WHERE t.recommendation_id = ?";
-        jdbcTemplatePostgres.update(sql, dynamicRuleUuid);
-    }
 }
