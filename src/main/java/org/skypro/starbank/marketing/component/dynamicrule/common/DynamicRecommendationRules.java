@@ -31,7 +31,7 @@ public class DynamicRecommendationRules {
         }
         return Optional.of(new Recommendation(
                 dynamicRule.name(),
-                dynamicRule.recommendationUuid(),
+                dynamicRule.productId(),
                 dynamicRule.text()));
     }
 }
