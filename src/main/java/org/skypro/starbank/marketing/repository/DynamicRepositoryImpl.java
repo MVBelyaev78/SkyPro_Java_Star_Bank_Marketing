@@ -84,10 +84,9 @@ public class DynamicRepositoryImpl implements DynamicRepository {
     @Override
     public RuleStatInfoAll getRulesStat() {
         final String sql = """
-                SELECT t.recommendation_id, COUNT(1) cnt
+                SELECT t.recommendation_id, COUNT(1) count
                   FROM recommendation_products_stat t
-                 WHERE t.recommendation_id = ?
-                 GROUP BY recommendation_id
+                 GROUP BY t.recommendation_id
                 """;
         return new RuleStatInfoAll(jdbcTemplatePostgres.query(sql, new RuleStatRowMapper()));
     }
