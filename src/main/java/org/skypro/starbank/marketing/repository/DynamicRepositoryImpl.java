@@ -16,11 +16,9 @@ import java.util.UUID;
 @Repository
 public class DynamicRepositoryImpl implements DynamicRepository {
     private final JdbcTemplate jdbcTemplatePostgres;
-    private final DynamicStatisticRepository dynamicStatisticRepo;
 
     public DynamicRepositoryImpl(JdbcTemplate jdbcTemplatePostgres, DynamicStatisticRepository dynamicStatisticRepo) {
         this.jdbcTemplatePostgres = jdbcTemplatePostgres;
-        this.dynamicStatisticRepo = dynamicStatisticRepo;
     }
 
     @Override
@@ -42,8 +40,6 @@ public class DynamicRepositoryImpl implements DynamicRepository {
                 })
                 .forEach(jdbcTemplatePostgres::update);
 
-        dynamicStatisticRepo.addRuleStat(id);
-
         return new DynamicRule(
                 id,
                 product.name(),
@@ -58,15 +54,15 @@ public class DynamicRepositoryImpl implements DynamicRepository {
         String productSql = "SELECT * FROM recommendation_products";
         List<DynamicRule> products = jdbcTemplatePostgres.query(productSql, new ProductRowMapper());
 
-        for (DynamicRule product : products) {
-            String rulesSql = "SELECT * FROM recommendation_rules WHERE recommendation_id = ?";
+        String rulesSql = "SELECT * FROM recommendation_rules WHERE recommendation_id = ?";
+        products.forEach(product -> {
             List<QueryType> rules = jdbcTemplatePostgres.query(
                     rulesSql,
                     new RuleRowMapper(),
                     product.id()
             );
             product.rule().addAll(rules);
-        }
+        });
 
         return products;
     }
@@ -74,7 +70,6 @@ public class DynamicRepositoryImpl implements DynamicRepository {
     @Override
     public void deleteRule(UUID recommendationUuid) {
         String sql = "DELETE FROM recommendation_products WHERE product_id = ?";
-        dynamicStatisticRepo.deleteRuleStatAll(recommendationUuid);
         jdbcTemplatePostgres.update(sql, recommendationUuid);
     }
 }
