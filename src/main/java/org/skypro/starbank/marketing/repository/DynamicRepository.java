@@ -12,10 +12,4 @@ public interface DynamicRepository {
     Collection<DynamicRule> getRules();
 
     void deleteRule(UUID recommendationUuid);
-
-    void addRuleStat(UUID dynamicRuleUuid);
-
-    RuleStatInfoAll getRulesStat();
-
-    void deleteRuleStatAll(UUID dynamicRuleUuid);
 }

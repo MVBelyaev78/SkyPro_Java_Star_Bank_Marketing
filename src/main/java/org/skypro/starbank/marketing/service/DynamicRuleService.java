@@ -5,6 +5,7 @@ import org.skypro.starbank.marketing.dto.dynamicrule.RuleStatInfoAll;
 import org.skypro.starbank.marketing.repository.DynamicRepository;
 import org.skypro.starbank.marketing.dto.dynamicrule.DynamicRule;
 import org.skypro.starbank.marketing.dto.dynamicrule.ListingRules;
+import org.skypro.starbank.marketing.repository.DynamicStatisticRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -12,9 +13,11 @@ import java.util.UUID;
 @Service
 public class DynamicRuleService {
     private final DynamicRepository repo;
+    private final DynamicStatisticRepository statisticRepo;
 
-    public DynamicRuleService(DynamicRepository repo) {
+    public DynamicRuleService(DynamicRepository repo, DynamicStatisticRepository statisticRepo) {
         this.repo = repo;
+        this.statisticRepo = statisticRepo;
     }
 
     @Operation(summary = "Добавить правило",
@@ -38,6 +41,6 @@ public class DynamicRuleService {
     @Operation(summary = "Получить статистику срабатываний правил",
             description = "Возвращает статистику срабатываний динамических правил")
     public RuleStatInfoAll getRulesStat() {
-        return repo.getRulesStat();
+        return statisticRepo.getRulesStat();
     }
 }
