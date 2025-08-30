@@ -17,14 +17,14 @@ public class DynamicStatisticRepositoryImpl implements DynamicStatisticRepositor
 
     @Override
     public void addRuleStat(UUID dynamicRuleUuid) {
-        final String sql = "INSERT INTO recommendation_products_stat(id, recommendation_id) VALUES (?, ?))";
+        final String sql = "INSERT INTO recommendation_products_stat(id, recommendation_id) VALUES (?, ?)";
         jdbcTemplatePostgres.update(sql, UUID.randomUUID(), dynamicRuleUuid);
     }
 
     @Override
     public RuleStatInfoAll getRulesStat() {
         final String sql = """
-                SELECT t.recommendation_id, COUNT(1) count
+                SELECT t.recommendation_id rule_id, COUNT(1) count
                   FROM recommendation_products_stat t
                  GROUP BY t.recommendation_id
                 """;

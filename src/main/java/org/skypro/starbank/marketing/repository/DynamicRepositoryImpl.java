@@ -16,9 +16,11 @@ import java.util.UUID;
 @Repository
 public class DynamicRepositoryImpl implements DynamicRepository {
     private final JdbcTemplate jdbcTemplatePostgres;
+    private final DynamicStatisticRepository dynamicStatisticRepo;
 
-    public DynamicRepositoryImpl(JdbcTemplate jdbcTemplatePostgres) {
+    public DynamicRepositoryImpl(JdbcTemplate jdbcTemplatePostgres, DynamicStatisticRepository dynamicStatisticRepo) {
         this.jdbcTemplatePostgres = jdbcTemplatePostgres;
+        this.dynamicStatisticRepo = dynamicStatisticRepo;
     }
 
     @Override
@@ -39,6 +41,8 @@ public class DynamicRepositoryImpl implements DynamicRepository {
                     return ps;
                 })
                 .forEach(jdbcTemplatePostgres::update);
+
+        dynamicStatisticRepo.addRuleStat(id);
 
         return new DynamicRule(
                 id,
@@ -70,6 +74,7 @@ public class DynamicRepositoryImpl implements DynamicRepository {
     @Override
     public void deleteRule(UUID recommendationUuid) {
         String sql = "DELETE FROM recommendation_products WHERE product_id = ?";
+        dynamicStatisticRepo.deleteRuleStatAll(recommendationUuid);
         jdbcTemplatePostgres.update(sql, recommendationUuid);
     }
 }
