@@ -17,7 +17,7 @@ public class DynamicRecommendationRules {
         this.searchMethodFactory = searchMethodFactory;
     }
 
-    public Optional<Recommendation> getSingleRecommendation(UUID userId, DynamicRule dynamicRule) {
+    public Optional<Recommendation> performDynamicRule(UUID userId, DynamicRule dynamicRule) {
         if (!dynamicRulesRepository.getUserCheckQuery(userId.toString()).result()) {
             return Optional.empty();
         }

@@ -25,7 +25,7 @@ public class RecommendationCollectDynamic implements RecommendationCollect {
         dynamicRepository
                 .getRules()
                 .forEach(dynamicRule -> dynamicRecommendationRules
-                    .getSingleRecommendation(userId, dynamicRule)
+                    .performDynamicRule(userId, dynamicRule)
                     .ifPresent(recommendations::add));
         return recommendations;
     }
