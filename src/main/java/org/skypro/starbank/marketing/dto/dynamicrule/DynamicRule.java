@@ -23,16 +23,16 @@ public record DynamicRule(
 
         @Schema(description = "Описание продукта",
                 example = "Специальная программа ипотечного кредитования для молодых семей.")
-        String text,
+        String productText,
 
         @Schema(description = "Список условий правила",
                 requiredMode = Schema.RequiredMode.REQUIRED)
         Collection<QueryType> rule) {
-    public DynamicRule(UUID id, String productName, UUID productId, String text, Collection<QueryType> rule) {
+    public DynamicRule(UUID id, String productName, UUID productId, String productText, Collection<QueryType> rule) {
         this.id = id;
         this.productName = productName;
         this.productId = productId;
-        this.text = text;
+        this.productText = productText;
         this.rule = rule;
     }
 
@@ -47,8 +47,8 @@ public record DynamicRule(
     }
 
     @JsonProperty("product_text")
-    public String text() {
-        return text;
+    public String productText() {
+        return productText;
     }
 
     @JsonProperty("rule")

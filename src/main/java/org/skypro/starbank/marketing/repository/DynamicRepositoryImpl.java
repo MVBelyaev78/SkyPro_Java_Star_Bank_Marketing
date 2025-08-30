@@ -24,7 +24,7 @@ public class DynamicRepositoryImpl implements DynamicRepository {
     @Override
     public DynamicRule addRule(DynamicRule product) {
         String productSql = "INSERT INTO recommendation_products (id, product_id, product_name, product_text) VALUES (?, ?, ?, ?) returning id";
-        UUID id = jdbcTemplatePostgres.queryForObject(productSql, UUID.class, UUID.randomUUID(), product.productId(), product.productName(), product.text());
+        UUID id = jdbcTemplatePostgres.queryForObject(productSql, UUID.class, UUID.randomUUID(), product.productId(), product.productName(), product.productText());
 
         String ruleSql = "INSERT INTO recommendation_rules (id, recommendation_id, query, arguments, negate) VALUES (?, ?, ?, ?, ?)";
         product.rule()
@@ -44,7 +44,7 @@ public class DynamicRepositoryImpl implements DynamicRepository {
                 id,
                 product.productName(),
                 product.productId(),
-                product.text(),
+                product.productText(),
                 product.rule()
         );
     }
