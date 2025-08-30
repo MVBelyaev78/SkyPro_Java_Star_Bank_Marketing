@@ -30,7 +30,7 @@ public class DynamicRecommendationRules {
             return Optional.empty();
         }
         return Optional.of(new Recommendation(
-                dynamicRule.name(),
+                dynamicRule.productName(),
                 dynamicRule.productId(),
                 dynamicRule.text()));
     }

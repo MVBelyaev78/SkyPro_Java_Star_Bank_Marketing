@@ -22,7 +22,7 @@ public record Recommendation(
     }
 
     @Override
-    @JsonProperty("name")
+    @JsonProperty("productName")
     public String name() {
         return name;
     }
