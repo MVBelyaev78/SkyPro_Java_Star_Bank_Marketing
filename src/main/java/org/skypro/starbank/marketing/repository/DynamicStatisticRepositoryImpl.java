@@ -24,9 +24,11 @@ public class DynamicStatisticRepositoryImpl implements DynamicStatisticRepositor
     @Override
     public RuleStatInfoAll getRulesStat() {
         final String sql = """
-                SELECT t.recommendation_id rule_id, COUNT(1) count
-                  FROM recommendation_products_stat t
-                 GROUP BY t.recommendation_id
+                    select rp.id rule_id,
+                           (select count(1)
+                              from public.recommendation_products_stat rps
+                             where rps.recommendation_id = rp.id) "count"
+                      from public.recommendation_products rp
                 """;
         return new RuleStatInfoAll(jdbcTemplatePostgres.query(sql, new RuleStatRowMapper()));
     }
