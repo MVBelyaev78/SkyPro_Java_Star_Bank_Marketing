@@ -6,6 +6,7 @@ import org.skypro.starbank.marketing.dto.dynamicrule.SearchParameters;
 import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.skypro.starbank.marketing.mapper.SearchResultMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,7 @@ public class DynamicRulesRepository {
     }
 
     @Operation(summary = "Проверка пользователя", description = "Проверяет, существует ли пользователь в системе")
+    @Cacheable(value = "userCheckQuery", key = "#userId")
     public SearchResult getUserCheckQuery(@Parameter(description = "UUID пользователя") String userId) {
         final String sql = "select exists (select null from public.users u where u.id = ?) AS result";
         return jdbcTemplate.queryForObject(sql, new SearchResultMapper(), userId);
@@ -27,6 +29,10 @@ public class DynamicRulesRepository {
 
     @Operation(summary = "Проверка типа продукта",
             description = "Проверяет, является ли пользователь клиентом определенного типа продукта")
+    @Cacheable(value = "userOfQuery",
+            key = "#searchParameters.userId + ':' + " +
+            "#searchParameters.arguments[0] + ':' + " +
+            "#searchParameters.negate")
     public SearchResult getUserOfQuery(
             @Parameter(description = "Параметры поиска: UUID пользователя, Тип продукта, Инвертировать результат")
             SearchParameters searchParameters) {
@@ -68,6 +74,10 @@ public class DynamicRulesRepository {
 
     @Operation(summary = "Проверка активного использования",
             description = "Проверяет, активно ли пользователь использует продукт определенного типа")
+    @Cacheable(value = "activeUserOfQuery",
+            key = "#searchParameters.userId + ':' + " +
+            "#searchParameters.arguments[0] + ':' + " +
+            "#searchParameters.negate")
     public SearchResult getActiveUserOfQuery(
             @Parameter(description = "Параметры поиска: UUID пользователя, Тип продукта, Инвертировать результат")
             SearchParameters searchParameters) {
@@ -90,7 +100,6 @@ public class DynamicRulesRepository {
                 !productType.equals("SAVING")) {
             throw new IllegalArgumentException("incorrect product type");
         }
-
         final Integer minTransactions = 5;
         final String sql = String.format("""
                 select %s ? <= (
@@ -111,6 +120,13 @@ public class DynamicRulesRepository {
 
     @Operation(summary = "Сравнение сумм всех транзакций",
             description = "Запрос сравнивает сумму всех транзакций одного типа по продуктам одного типа с некоторой константой")
+    @Cacheable(value = "transactionSumCompare",
+            key = "#searchParameters.userId + ':' + " +
+            "#searchParameters.arguments[0] + ':' + " +
+            "#searchParameters.arguments[1] + ':' + " +
+            "#searchParameters.arguments[2] + ':' + " +
+            "#searchParameters.arguments[3] + ':' + " +
+            "#searchParameters.negate")
     public SearchResult getTransactionSumCompare(
             @Parameter(description = "Параметры поиска: UUID пользователя, Тип продукта, Тип транзакции, Тип сравнения, Неотрицательное целое число, Инвертировать результат")
             SearchParameters searchParameters) {
@@ -174,6 +190,11 @@ public class DynamicRulesRepository {
 
     @Operation(summary = "Сравнение суммы пополнений с тратами",
             description = "Сравнение суммы пополнений с тратами по всем продуктам одного типа")
+    @Cacheable(value = "transactionSumCompareDepositWithdraw",
+            key = "#searchParameters.userId + ':' + " +
+            "#searchParameters.arguments[0] + ':' + " +
+            "#searchParameters.arguments[1] + ':' + " +
+            "#searchParameters.negate")
     public SearchResult getTransactionSumCompareDepositWithdraw(
             @Parameter(description = "Параметры поиска: UUID пользователя, Тип продукта, Тип сравнения, Инвертировать результат")
             SearchParameters searchParameters) {
