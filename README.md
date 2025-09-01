@@ -224,7 +224,7 @@ CLOSED
 Ветка stage_3
 7 ч
 Дмитрий
-REOPENED
+CLOSED
 
 20. A8
 Ветка stage_3
