@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/management")
-@Tag(name = "Cache Management Controller", description = "API для управления кэшами")
-public class CacheManagementController {
+@Tag(name = "Management Controller", description = "Служебный API")
+public class ManagementController {
     private final CacheManager cacheManager;
 
-    public CacheManagementController(CacheManager cacheManager) {
+    public ManagementController(CacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }
 
