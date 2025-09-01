@@ -47,7 +47,7 @@ public class DynamicRuleController {
         return dynamicRuleService.getListingRules();
     }
 
-    @DeleteMapping("/{productId}")
+    @DeleteMapping("/{recommendationUuid}")
     @Operation(summary = "Удалить правило по ID",
             description = "Удаляет правило генерации рекомендаций по его уникальному идентификатору.")
     @ApiResponses({
