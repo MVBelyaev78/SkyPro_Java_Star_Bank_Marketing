@@ -219,9 +219,12 @@ CLOSED
 
 19. A4, A7
 Зависит от истории S5
+Не реализована история A7
+См. обсуждение дом. задания 3-го этапа, мой вопрос от 01.09.25 17:20.
 Ветка stage_3
 7 ч
 Дмитрий
+REOPENED
 
 20. A8
 Ветка stage_3
@@ -243,21 +246,31 @@ CLOSED
 3 ч
 (не назначено)
 
-97. Unit-тесты: разбивка по сервисам, компонентам и репозиториям (предварительная)
+96. Unit-тесты: разбивка по сервисам, компонентам и репозиториям:
+Ветка stage_4
+    96.0. координация и проверка по ходу работ: Михаил
+    96.1. DynamicRuleService: 3 ч (не назначено)
+    96.2. RecommendationService: 0.5 ч (не назначено)
+    96.3. RecommendationCollectFixed: 1 ч (не назначено)
+    96.4. RecommendationRule: 3 ч (не назначено)
+    96.5. RecommendationCollectDynamic: 1 ч (не назначено)
+    96.6. DynamicRecommendationRules, DynamicRecommendationSearchMethodFactory: 1 ч (не назначено)
+    96.7. DynRecRule: 10 ч (не назначено)
+    96.8. FixedRulesRepository: 5 ч (не назначено)
+    96.9. DynamicRulesRepository: 5 ч (не назначено)
+    96.10. DynamicRepository: 3 ч (не назначено)
+    96.11. DynamicStatisticRepository: 3 ч (не назначено)
+    96.12. ProductRowMapper, RuleRowMapper, RuleStatRowMapper, SearchResultMapper: 5 ч (не назначено)
+
+97. Интеграционные тесты:
+Ветка stage_4
     97.0. координация и проверка по ходу работ: Михаил
-    97.1. DynamicRuleService: 3 ч (не назначено)
-    97.2. RecommendationService: 0.5 ч (не назначено)
-    97.3. RecommendationCollectFixed: 1 ч (не назначено)
-    97.4. RecommendationRule: 3 ч (не назначено)
-    97.5. RecommendationCollectDynamic: 1 ч (не назначено)
-    97.6. DynamicRecommendationRules, DynamicRecommendationSearchMethodFactory: 1 ч (не назначено)
-    97.7. DynRecRule: 10 ч (не назначено)
-    97.8. FixedRulesRepository: 5 ч (не назначено)
-    97.9. DynamicRulesRepository: 5 ч (не назначено)
-    97.10. DynamicRepository: 3 ч (не назначено)
-    97.11. DynamicStatisticRepository: 3 ч (не назначено)
+    97.1. RecommendationController: 8 ч (не назначено)
+    97.2. DynamicRuleController: 4 ч (не назначено)
+    97.3. все приложение as is: 2 ч (не назначено)
 
 98. Рефакторинг БД
+Ветка stage_4
 Описание: переименовать
     1. таблица recommendation_rules -> recommendation_queries
     2. таблица recommendation_products_stat -> recommendation_rules_stat
@@ -267,7 +280,7 @@ CLOSED
 
 99. A10
 См. требования к 3-му этапу, раздел "Подготовка к продакшену"
-Ветка stage_3
+Ветка stage_4
 2 ч
 (не назначено)
 
