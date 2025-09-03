@@ -17,14 +17,14 @@ import java.util.UUID;
 public class DynamicRepositoryImpl implements DynamicRepository {
     private final JdbcTemplate jdbcTemplatePostgres;
 
-    public DynamicRepositoryImpl(JdbcTemplate jdbcTemplatePostgres) {
+    public DynamicRepositoryImpl(JdbcTemplate jdbcTemplatePostgres, DynamicStatisticRepository dynamicStatisticRepo) {
         this.jdbcTemplatePostgres = jdbcTemplatePostgres;
     }
 
     @Override
     public DynamicRule addRule(DynamicRule product) {
         String productSql = "INSERT INTO recommendation_products (id, product_id, product_name, product_text) VALUES (?, ?, ?, ?) returning id";
-        UUID id = jdbcTemplatePostgres.queryForObject(productSql, UUID.class, UUID.randomUUID(), product.recommendationUuid(), product.name(), product.text());
+        UUID id = jdbcTemplatePostgres.queryForObject(productSql, UUID.class, UUID.randomUUID(), product.productId(), product.productName(), product.productText());
 
         String ruleSql = "INSERT INTO recommendation_rules (id, recommendation_id, query, arguments, negate) VALUES (?, ?, ?, ?, ?)";
         product.rule()
@@ -42,9 +42,9 @@ public class DynamicRepositoryImpl implements DynamicRepository {
 
         return new DynamicRule(
                 id,
-                product.name(),
-                product.recommendationUuid(),
-                product.text(),
+                product.productName(),
+                product.productId(),
+                product.productText(),
                 product.rule()
         );
     }
@@ -54,15 +54,15 @@ public class DynamicRepositoryImpl implements DynamicRepository {
         String productSql = "SELECT * FROM recommendation_products";
         List<DynamicRule> products = jdbcTemplatePostgres.query(productSql, new ProductRowMapper());
 
-        for (DynamicRule product : products) {
-            String rulesSql = "SELECT * FROM recommendation_rules WHERE recommendation_id = ?";
+        String rulesSql = "SELECT * FROM recommendation_rules WHERE recommendation_id = ?";
+        products.forEach(product -> {
             List<QueryType> rules = jdbcTemplatePostgres.query(
                     rulesSql,
                     new RuleRowMapper(),
                     product.id()
             );
             product.rule().addAll(rules);
-        }
+        });
 
         return products;
     }

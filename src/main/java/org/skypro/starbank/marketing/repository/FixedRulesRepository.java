@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
 import org.skypro.starbank.marketing.mapper.SearchResultMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,7 @@ public class FixedRulesRepository {
 
     @Operation(summary = "Проверка для Invest 500",
             description = "Проверяет условия для рекомендации инвестиционного продукта")
+    @Cacheable(value = "invest500Query", key = "#userId")
     public SearchResult getSearchResultInvest500(@Parameter(description = "UUID пользователя") String userId) {
         String sql = """
                 SELECT
@@ -55,6 +57,7 @@ public class FixedRulesRepository {
 
     @Operation(summary = "Проверка для Top Saving",
             description = "Проверяет условия для рекомендации сберегательного продукта")
+    @Cacheable(value = "topSavingQuery", key = "#userId")
     public SearchResult getSearchResultTopSaving(@Parameter(description = "UUID пользователя") String userId) {
         String sql = """
                 SELECT (
@@ -86,6 +89,7 @@ public class FixedRulesRepository {
 
     @Operation(summary = "Проверка для Простого кредита",
             description = "Проверяет условия для рекомендации кредитного продукта")
+    @Cacheable(value = "simpleLoanQuery", key = "#userId")
     public SearchResult getSearchResultSimpleLoan(@Parameter(description = "UUID пользователя") String userId) {
         String sql = """
                 SELECT EXISTS (SELECT NULL

@@ -8,32 +8,47 @@ import java.util.UUID;
 
 @Schema(description = "Динамическое правило для генерации рекомендаций")
 public record DynamicRule(
-        @Schema(hidden = true) UUID id,
-        @Schema(description = "Название финансового продукта", example = "Ипотека 'Молодая семья'", requiredMode = Schema.RequiredMode.REQUIRED) String name,
-        @Schema(description = "UUID рекомендуемого продукта", example = "f56b9e7e-eb9a-4f27-9c3a-910a2bb8f7f1", requiredMode = Schema.RequiredMode.REQUIRED) UUID recommendationUuid,
-        @Schema(description = "Описание продукта", example = "Специальная программа ипотечного кредитования для молодых семей.") String text,
-        @Schema(description = "Список условий правила", requiredMode = Schema.RequiredMode.REQUIRED) Collection<QueryType> rule) {
-    public DynamicRule(UUID id, String name, UUID recommendationUuid, String text, Collection<QueryType> rule) {
+        @Schema(hidden = true)
+        UUID id,
+
+        @Schema(description = "Название финансового продукта",
+                example = "Ипотека 'Молодая семья'",
+                requiredMode = Schema.RequiredMode.REQUIRED)
+        String productName,
+
+        @Schema(description = "UUID рекомендуемого продукта",
+                example = "f56b9e7e-eb9a-4f27-9c3a-910a2bb8f7f1",
+                requiredMode = Schema.RequiredMode.REQUIRED)
+        UUID productId,
+
+        @Schema(description = "Описание продукта",
+                example = "Специальная программа ипотечного кредитования для молодых семей.")
+        String productText,
+
+        @Schema(description = "Список условий правила",
+                requiredMode = Schema.RequiredMode.REQUIRED)
+        Collection<QueryType> rule) {
+    public DynamicRule(UUID id, String productName, UUID productId, String productText, Collection<QueryType> rule) {
         this.id = id;
-        this.name = name;
-        this.recommendationUuid = recommendationUuid;
-        this.text = text;
+        this.productName = productName;
+        this.productId = productId;
+        this.productText = productText;
         this.rule = rule;
     }
 
     @JsonProperty("product_name")
-    public String name() {
-        return name;
+    public String productName() {
+        return productName;
     }
 
     @JsonProperty("product_id")
-    public UUID recommendationUuid() {
-        return recommendationUuid;
+    public UUID productId() {
+        return productId;
     }
 
     @JsonProperty("product_text")
-    public String text() {
-        return text;
+    public String productText() {
+        return productText;
     }
 
     @JsonProperty("rule")

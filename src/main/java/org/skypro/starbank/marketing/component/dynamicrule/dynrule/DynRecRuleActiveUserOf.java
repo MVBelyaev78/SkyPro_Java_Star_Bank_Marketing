@@ -1,4 +1,4 @@
-package org.skypro.starbank.marketing.component.dynamicrule;
+package org.skypro.starbank.marketing.component.dynamicrule.dynrule;
 
 import org.skypro.starbank.marketing.dto.dynamicrule.SearchParameters;
 import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
@@ -6,20 +6,20 @@ import org.skypro.starbank.marketing.repository.DynamicRulesRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DynRecRuleUserOf implements DynRecRuleSearchMethod {
+public class DynRecRuleActiveUserOf implements DynRecRule {
     private final DynamicRulesRepository dynamicRulesRepository;
 
-    public DynRecRuleUserOf(DynamicRulesRepository dynamicRulesRepository) {
+    public DynRecRuleActiveUserOf(DynamicRulesRepository dynamicRulesRepository) {
         this.dynamicRulesRepository = dynamicRulesRepository;
     }
 
     @Override
     public String getQuery() {
-        return "USER_OF";
+        return "ACTIVE_USER_OF";
     }
 
     @Override
     public SearchResult getSearchMethod(SearchParameters searchParameters) {
-        return dynamicRulesRepository.getUserOfQuery(searchParameters);
+        return dynamicRulesRepository.getActiveUserOfQuery(searchParameters);
     }
 }
