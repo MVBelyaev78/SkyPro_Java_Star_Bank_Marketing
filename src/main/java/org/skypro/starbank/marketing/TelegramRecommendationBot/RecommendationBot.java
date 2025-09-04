@@ -7,10 +7,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.logging.Logger;
+
+
 @Component
 public class RecommendationBot extends TelegramLongPollingBot {
 
     private final BotConfig botConfig;
+    private static final Logger logger = Logger.getLogger(RecommendationBot.class.getName());
 
     @Autowired
     public RecommendationBot(BotConfig botConfig) {
@@ -29,9 +33,12 @@ public class RecommendationBot extends TelegramLongPollingBot {
 
             try {
                 execute(message);
+                logger.info("Сообщение отправлено в чат: " + chatId);
             } catch (TelegramApiException e) {
-                e.printStackTrace();
+                logger.severe("Ошибка при отправке сообщения: " + e.getMessage());
             }
+        } else {
+            logger.warning("Получено не текстовое сообщение или обновление: " + update);
         }
     }
 
