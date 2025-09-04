@@ -31,3 +31,5 @@ CREATE TABLE recommendation_products_stat
 );
 
 CREATE INDEX idx_recommendation_product_product_id ON recommendation_products (product_id);
+
+CREATE INDEX idx_recommendation_products_stat_recommendation_id ON recommendation_products_stat (recommendation_id);
