@@ -9,14 +9,13 @@ import org.springframework.context.annotation.PropertySource;
 public class BotConfig {
 
     @Value("${bot.name}")
-    private String recommendation111_bot;
+    private String RecommendationBot;
 
     @Value("${bot.token}")
     private String botToken;
 
-
     public String getBotName() {
-        return recommendation111_bot;
+        return RecommendationBot;
     }
 
     public String getBotToken() {
