@@ -1,4 +1,4 @@
-package org.skypro.starbank.marketing.TelegramRecommendationBot;
+package org.skypro.starbank.marketing.configuration.telegrambot;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -1,5 +1,6 @@
-package org.skypro.starbank.marketing.TelegramRecommendationBot;
+package org.skypro.starbank.marketing.component.telegrambot;
 
+import org.skypro.starbank.marketing.configuration.telegrambot.BotConfig;
 import org.skypro.starbank.marketing.dto.recommendation.RecommendationServiceResult;
 import org.skypro.starbank.marketing.dto.recommendation.UserInfo;
 import org.skypro.starbank.marketing.repository.FixedRulesRepository;
