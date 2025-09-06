@@ -3,10 +3,16 @@ package org.skypro.starbank.marketing.repository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.skypro.starbank.marketing.dto.recommendation.SearchResult;
+import org.skypro.starbank.marketing.dto.recommendation.UserInfo;
 import org.skypro.starbank.marketing.mapper.SearchResultMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class FixedRulesRepository {
@@ -18,6 +24,7 @@ public class FixedRulesRepository {
 
     @Operation(summary = "Проверка для Invest 500",
             description = "Проверяет условия для рекомендации инвестиционного продукта")
+    @Cacheable(value = "invest500Query", key = "#userId")
     public SearchResult getSearchResultInvest500(@Parameter(description = "UUID пользователя") String userId) {
         String sql = """
                 SELECT
@@ -55,6 +62,7 @@ public class FixedRulesRepository {
 
     @Operation(summary = "Проверка для Top Saving",
             description = "Проверяет условия для рекомендации сберегательного продукта")
+    @Cacheable(value = "topSavingQuery", key = "#userId")
     public SearchResult getSearchResultTopSaving(@Parameter(description = "UUID пользователя") String userId) {
         String sql = """
                 SELECT (
@@ -86,6 +94,7 @@ public class FixedRulesRepository {
 
     @Operation(summary = "Проверка для Простого кредита",
             description = "Проверяет условия для рекомендации кредитного продукта")
+    @Cacheable(value = "simpleLoanQuery", key = "#userId")
     public SearchResult getSearchResultSimpleLoan(@Parameter(description = "UUID пользователя") String userId) {
         String sql = """
                 SELECT EXISTS (SELECT NULL
@@ -112,5 +121,27 @@ public class FixedRulesRepository {
                 """;
         return jdbcTemplate.queryForObject(sql, new SearchResultMapper(),
                 userId, userId, userId, 100000, userId);
+    }
+
+    public Optional<UserInfo> getUserInfo(String username) {
+        String sql = """
+                SELECT id, first_name, last_name FROM USERS WHERE USERNAME = ?
+                """;
+        List<UserInfo> users = jdbcTemplate.query(
+                sql,
+                (rs, rowNum) ->
+                        new UserInfo(
+                                UUID.fromString(rs.getString("id")),
+                                rs.getString("first_name"),
+                                rs.getString("last_name")
+                        ),
+                username
+        );
+
+        if (users.size() != 1) {
+            return Optional.empty();
+        }
+
+        return Optional.of(users.get(0));
     }
 }
