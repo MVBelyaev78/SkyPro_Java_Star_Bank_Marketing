@@ -1,5 +1,6 @@
-package org.skypro.starbank.marketing.TelegramRecommendationBot;
+package org.skypro.starbank.marketing.configuration.telegrambot;
 
+import org.skypro.starbank.marketing.component.telegrambot.RecommendationBot;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
